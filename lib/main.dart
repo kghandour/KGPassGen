@@ -1,235 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:kg_passgen/Screens/Home/home_screen.dart';
-import 'package:kg_passgen/Screens/Settings/settings_screen.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:kg_passgen/Screens/Tips/tips_screen.dart';
-import 'package:kg_passgen/CustomTheme.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-var settingsBox;
-
-void main() async {
-  await Hive.initFlutter();
-  settingsBox = await Hive.openBox('settings');
-  runApp(MyApp());
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'KG Password Generator',
-      theme: CustomTheme.darkTheme,
-      home: AppManager(title: 'KG Password Generator'),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class AppManager extends StatefulWidget {
-  AppManager({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
   final String title;
 
   @override
-  AppManagerState createState() => AppManagerState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class AppManagerState extends State<AppManager> {
-  int _selectedIndex = 0;
-  GlobalKey<HomePageState> _myKey = GlobalKey();
-  GlobalKey<SettingsPageState> _settingsKey = GlobalKey();
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
 
-  Future<void> _showAboutDialog() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('About this application'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                    'KG Password Generator provides a method of generating secure passwords that matches today\'s standards of security. Users can choose between two modes, SGP (SupergenPass - an older version) and KGPassGen (improved version of the SGP algorithm)'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Text("v" + packageInfo.version + "+" + packageInfo.buildNumber),
-            // TextButton(
-            //   child: Text('Approve'),
-            //   onPressed: () {
-            //     Navigator.of(context).pop();
-            //   },
-            // ),
-          ],
-        );
-      },
-    );
-  }
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  void _onItemTapped(int index) {
+  void _incrementCounter() {
     setState(() {
-      _selectedIndex = index;
-      _settingsKey.currentState?.kgLenFocus?.unfocus();
-      _settingsKey.currentState?.sgpLenFocus?.unfocus();
-      if (index == 0) {
-        _myKey.currentState?.forceShowButton();
-      }
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
     });
-  }
-
-  bool _isTooShort = false;
-  bool _isTooWide = false;
-
-  Widget appContent() {
-    return Container(
-      child: Center(
-        child: IndexedStack(
-          children: <Widget>[
-            HomePage(
-              key: _myKey,
-            ),
-            SettingsPage(
-              key: _settingsKey,
-            ),
-            TipsPage()
-          ],
-          index: _selectedIndex,
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    if (height <= 380)
-      setState(() => _isTooShort = true);
-    else
-      setState(() => _isTooShort = false);
-
-    if (width >= 800)
-      setState(() {
-        _isTooWide = true;
-      });
-    else
-      setState(() {
-        _isTooWide = false;
-      });
-
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
-        actions: [
-          PopupMenuButton(
-              itemBuilder: (_) => <PopupMenuItem<String>>[
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(0),
-                        icon: const Icon(Icons.home),
-                        label: Text(
-                          "Home",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(1),
-                        icon: Icon(Icons.settings),
-                        label: Text(
-                          "Settings",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(2),
-                        icon: Icon(Icons.help),
-                        label: Text(
-                          "Tips",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('mailto:feedback@kghandour.com'),
-                      icon: Icon(Icons.mail),
-                      label: Text(
-                        "Send Feedback",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('https://kghandour.com'),
-                      icon: Icon(Icons.link),
-                      label: Text(
-                        "Visit KGhandour Website",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('https://supergenpass.com'),
-                      icon: Icon(Icons.link),
-                      label: Text(
-                        "Visit SGP Website",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => _showAboutDialog(),
-                      icon: Icon(Icons.info),
-                      label: Text(
-                        "About",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                  ])
-        ],
       ),
-      body: _isTooWide
-          ? Center(
-              child: SizedBox(
-                width: 800,
-                child: appContent(),
-              ),
-            )
-          : appContent(),
-      bottomNavigationBar: _isTooShort
-          ? null
-          : BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.help),
-                  label: 'Tips',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.red,
-              onTap: _onItemTapped,
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
             ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
