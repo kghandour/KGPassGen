@@ -9,6 +9,12 @@ Public Release:
 
 This project is built using Flutter.
 
+### Run it for the web
+Requires chrome to be installed.
+```
+flutter run -d chrome
+```
+
 ## Documentation is WIP
 
 A few resources to get you started if this is your first Flutter project:
