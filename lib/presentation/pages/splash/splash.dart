@@ -27,22 +27,28 @@ class _OnboardingPageState extends State<OnboardingPageState> {
           controller: controller,
           children: [
             splashTemplate(
-              color: Colors.red,
-              title: 'No need to memorize multiple passwords',
+              context: context,
+              urlImage: 'assets/splash-1.png',
+              color: Colors.white70,
+              title: 'One password to rule them all',
               subtitle:
-                  'Now you only need to know one (master) password. The generator will handle the rest for you',
+                  'Now you only need to know one (master) password and KG Pass Generator will create a unique password for each website that you would like to visit.',
             ),
             splashTemplate(
+              context: context,
+              urlImage: 'assets/splash-2.png',
               color: Colors.indigo,
               title: 'More security for you',
               subtitle:
-                  'Create unique passwords for each website that you are using. That way you are more secure!',
+                  'Even if one website you use gets hacked, your other accounts are still secure. Never use the same password for more than one website.',
             ),
             splashTemplate(
+              context: context,
+              urlImage: 'assets/splash-3.png',
               color: Colors.green,
-              title: 'Zero data transmitted. Completely free.',
+              title: 'Everything is on your device.',
               subtitle:
-                  'No backend, no database, no tracking. Completely open-source.',
+                  'Fully Open-source. Completely free.  Nothing is transmitted.',
             ),
           ],
         ),
