@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/model/configuration.dart';
+import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/pages/configuration_page.dart';
 import 'package:kg_passgen/presentation/pages/splash/splash.dart';
 
@@ -10,7 +11,9 @@ Future main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(ConfigurationAdapter());
+  Hive.registerAdapter(GeneralAdapter());
   await Hive.openBox<Configuration>('configurations');
+  await Hive.openBox<General>('general');
 
   runApp(const MyApp());
 }
