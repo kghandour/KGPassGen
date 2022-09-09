@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:kg_passgen/presentation/pages/splash/page_template.dart';
 
-class OnboardingPageState extends StatefulWidget {
+class OnboardingPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _OnboardingPageState();
   }
 }
 
-class _OnboardingPageState extends State<OnboardingPageState> {
+class _OnboardingPageState extends State<OnboardingPage> {
   final controller = PageController();
+  bool isLastPage = false;
 
   @override
   void dispose() {
@@ -25,6 +26,11 @@ class _OnboardingPageState extends State<OnboardingPageState> {
         padding: const EdgeInsets.only(bottom: 120),
         child: PageView(
           controller: controller,
+          onPageChanged: (index) {
+            setState(() {
+              isLastPage = index == 2;
+            });
+          },
           children: [
             splashTemplate(
               context: context,
@@ -53,31 +59,59 @@ class _OnboardingPageState extends State<OnboardingPageState> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        height: 120,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-                onPressed: () => controller.jumpToPage(2),
-                child: const Text('Skip')),
-            Center(
-              child: SmoothPageIndicator(
-                controller: controller,
-                count: 3,
-                onDotClicked: (index) => controller.animateToPage(index,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
-              ),
+      bottomSheet: isLastPage
+          ? TextButton(
+              style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red.shade400,
+                  minimumSize: const Size.fromHeight(120)),
+              onPressed: () async {
+                Navigator.of(context).pushReplacementNamed('/home');
+              },
+              child: const Text(
+                'Get Started',
+              ))
+          : InProgress(controller: controller),
+    );
+  }
+}
+
+class InProgress extends StatelessWidget {
+  const InProgress({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final PageController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 120,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          TextButton(
+              onPressed: () => controller.jumpToPage(2),
+              child: const Text('Skip')),
+          Center(
+            child: SmoothPageIndicator(
+              controller: controller,
+              count: 3,
+              onDotClicked: (index) => controller.animateToPage(index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut),
             ),
-            TextButton(
-                onPressed: () => controller.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
-                child: const Text('Next'))
-          ],
-        ),
+          ),
+          TextButton(
+              onPressed: () => controller.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut),
+              child: const Text('Next'))
+        ],
       ),
     );
   }
