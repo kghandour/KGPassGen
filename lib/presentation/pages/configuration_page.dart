@@ -30,7 +30,16 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         final config = inits[2] as Configuration;
         final general = inits[3] as General;
 
+        String hashingAlgo = "KGP";
         selectedConfig ??= config;
+        if (selectedConfig!.hashingAlgorithm) {
+          hashingAlgo = "SGP";
+        }
+
+        String hashingFn = "MD5";
+        if (selectedConfig!.hashingFunction) {
+          hashingFn = "SHA512";
+        }
 
         return Scaffold(
           body: SafeArea(
@@ -72,6 +81,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       child: Text("New Configuration"),
                     ),
                   ),
+                  Text("Last modified " + selectedConfig!.editDate.toString()),
                   Text(
                     "General Settings",
                     style: Theme.of(context).textTheme.headline6,
@@ -82,11 +92,28 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         borderRadius: BorderRadius.all(Radius.circular(15))),
                     child: Column(
                       children: [
-                        ListTile(
-                          title: Text(
-                            selectedConfig!.name,
-                          ),
-                        ),
+                        SwitchListTile(
+                            title: Text("Hashing Algorithm: " + hashingAlgo),
+                            subtitle: Text(
+                                "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."),
+                            value: selectedConfig!.hashingAlgorithm,
+                            onChanged: (bool value) {
+                              setState(() {
+                                ConfigurationController.updateHashingAlgorith(
+                                    selectedConfig!, value);
+                              });
+                            }),
+                        Divider(),
+                        SwitchListTile(
+                            title: Text("Hashing Function: " + hashingFn),
+                            subtitle: Text("Options:\nMD5 or SHA512."),
+                            value: selectedConfig!.hashingFunction,
+                            onChanged: (bool value) {
+                              setState(() {
+                                ConfigurationController.updateHashingFunction(
+                                    selectedConfig!, value);
+                              });
+                            }),
                         Divider(),
                         Text(selectedConfig!.createdDate.toString()),
                         Text(selectedConfig!.pwLength.toString()),

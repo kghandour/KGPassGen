@@ -25,6 +25,41 @@ class ConfigurationController {
     config.save();
   }
 
+  static void updateHashingAlgorith(Configuration config, bool hashingAlgo) {
+    config.editDate = DateTime.now();
+
+    config.hashingAlgorithm = hashingAlgo;
+    config.save();
+  }
+
+  static void updateHashingFunction(Configuration config, bool hashingFn) {
+    config.editDate = DateTime.now();
+
+    config.hashingFunction = hashingFn;
+    config.save();
+  }
+
+  static void updatePWLength(Configuration config, int pwLength) {
+    config.editDate = DateTime.now();
+
+    config.pwLength = pwLength;
+    config.save();
+  }
+
+  static void updateValInputPw(Configuration config, bool valInputPw) {
+    config.editDate = DateTime.now();
+
+    config.validateInputpw = valInputPw;
+    config.save();
+  }
+
+  static void updateStripSubdomain(Configuration config, bool stripSubdom) {
+    config.editDate = DateTime.now();
+
+    config.stripSubDomain = stripSubdom;
+    config.save();
+  }
+
   static void deleteConfiguration(Configuration configuration) {
     configuration.delete();
   }
