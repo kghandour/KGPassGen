@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
 import 'package:kg_passgen/controller/configuration_controller.dart';
@@ -90,36 +91,93 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     elevation: 5,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15))),
-                    child: Column(
-                      children: [
-                        SwitchListTile(
-                            title: Text("Hashing Algorithm: " + hashingAlgo),
-                            subtitle: Text(
-                                "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."),
-                            value: selectedConfig!.hashingAlgorithm,
-                            onChanged: (bool value) {
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          SwitchListTile(
+                              title: Text("Hashing Algorithm: " + hashingAlgo),
+                              subtitle: Text(
+                                  "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."),
+                              value: selectedConfig!.hashingAlgorithm,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  ConfigurationController.updateHashingAlgorith(
+                                      selectedConfig!, value);
+                                });
+                              }),
+                          Divider(),
+                          SwitchListTile(
+                              title: Text("Hashing Function: " + hashingFn),
+                              subtitle: Text("Options:\nMD5 or SHA512."),
+                              value: selectedConfig!.hashingFunction,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  ConfigurationController.updateHashingFunction(
+                                      selectedConfig!, value);
+                                });
+                              }),
+                          Divider(),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Generated Password Length",
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.remove),
+                                        onPressed: () => setState(() {
+                                          ConfigurationController
+                                              .updatePWLength(selectedConfig!,
+                                                  selectedConfig!.pwLength - 1);
+                                        }),
+                                      ),
+                                      Text(selectedConfig!.pwLength.toString()),
+                                      IconButton(
+                                        icon: Icon(Icons.add),
+                                        onPressed: () => setState(() {
+                                          ConfigurationController
+                                              .updatePWLength(selectedConfig!,
+                                                  selectedConfig!.pwLength + 1);
+                                        }),
+                                      ),
+                                    ],
+                                  ),
+                                ]),
+                          ),
+                          Divider(),
+                          CheckboxListTile(
+                            title: Text("Validate Input Password"),
+                            value: selectedConfig!.validateInputpw,
+                            onChanged: (value) {
+                              log(value.toString());
                               setState(() {
-                                ConfigurationController.updateHashingAlgorith(
-                                    selectedConfig!, value);
+                                ConfigurationController.updateValInputPw(
+                                    selectedConfig!, value!);
                               });
-                            }),
-                        Divider(),
-                        SwitchListTile(
-                            title: Text("Hashing Function: " + hashingFn),
-                            subtitle: Text("Options:\nMD5 or SHA512."),
-                            value: selectedConfig!.hashingFunction,
-                            onChanged: (bool value) {
+                            },
+                          ),
+                          CheckboxListTile(
+                            title: Text("Strip subdomain"),
+                            value: selectedConfig!.stripSubDomain,
+                            onChanged: (value) {
+                              log(value.toString());
                               setState(() {
-                                ConfigurationController.updateHashingFunction(
-                                    selectedConfig!, value);
+                                ConfigurationController.updateStripSubdomain(
+                                    selectedConfig!, value!);
                               });
-                            }),
-                        Divider(),
-                        Text(selectedConfig!.createdDate.toString()),
-                        Text(selectedConfig!.pwLength.toString()),
-                        Text(selectedConfig!.hashingAlgorithm.toString()),
-                        Text("Show Guide" + general.showGuide.toString()),
-                      ],
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   TextButton(
