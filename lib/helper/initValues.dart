@@ -12,19 +12,18 @@ List initializeGeneralConfig(configurationBox, generalBox) {
 
   Configuration config;
   General general;
-
-  if (configurations.length == 0) {
-    config = Configuration();
-    ConfigurationController.addConfiguration(config, configurationBox);
-  } else {
-    config = configurations.first;
-  }
-
   if (generalOptions.length == 0) {
     general = General();
     GeneralController.addGeneral(general, generalBox);
   } else {
     general = generalOptions.first;
+  }
+
+  if (configurations.length == 0) {
+    config = Configuration();
+    ConfigurationController.addConfiguration(config, configurationBox);
+  } else {
+    config = configurations[general.setConfiguration];
   }
 
   return [configurations, generalOptions, config, general];
