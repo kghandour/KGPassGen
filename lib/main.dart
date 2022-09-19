@@ -22,6 +22,7 @@ Future main() async {
   Hive.registerAdapter(GeneralAdapter());
 
   await Hive.openBox<Configuration>('configurations');
+
   await Hive.openBox<General>('general');
 
   runApp(const MyApp());

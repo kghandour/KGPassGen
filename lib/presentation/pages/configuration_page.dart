@@ -26,6 +26,28 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     super.dispose();
   }
 
+  void resetToDefaults(Box configurationBox, Box generalBox) {
+    setState(() {
+      Configuration config = Configuration();
+      config.name = "Default";
+      ConfigurationController.addConfiguration(config, configurationBox);
+      General general = General();
+      GeneralController.addGeneral(general, generalBox);
+
+      List inits = initializeGeneralConfig(configurationBox, generalBox);
+      final configurations = inits[0] as List<Configuration>;
+      final generalSettings = inits[1] as List<General>;
+
+      for (int i = 0; i < configurations.length - 1; i++) {
+        ConfigurationController.deleteConfiguration(configurations[i]);
+      }
+
+      for (int i = 0; i < generalSettings.length - 1; i++) {
+        GeneralController.deleteGeneral(generalSettings[i]);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiValueListenableBuilder(
@@ -336,18 +358,21 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       ),
                     ),
                   ),
-                  TextButton(
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.restore),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/home');
+                      setState(() {
+                        resetToDefaults(configurationBox, generalBox);
+                      });
                     },
-                    style: TextButton.styleFrom(
+                    style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red.shade400,
                         minimumSize: const Size.fromHeight(60)),
-                    child: Text(
-                      AppLocalizations.of(context)!.homePage,
+                    label: Text(
+                      AppLocalizations.of(context)!.resetToDefaults,
                     ),
                   )
                 ],

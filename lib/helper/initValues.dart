@@ -24,7 +24,9 @@ List initializeGeneralConfig(Box configurationBox, Box generalBox) {
     config = Configuration();
     ConfigurationController.addConfiguration(config, configurationBox);
   } else {
-    config = configurationBox.get(general.setConfiguration);
+    config = configurations[0];
+    if (general.setConfiguration != null && general.setConfiguration != 0)
+      config = configurationBox.get(general.setConfiguration);
   }
 
   return [configurations, generalOptions, config, general];
