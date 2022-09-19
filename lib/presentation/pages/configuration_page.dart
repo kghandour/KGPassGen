@@ -286,13 +286,20 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             trailing: DropdownButton<Locale>(
-                              value: Locale(general.locale, ''),
+                              value: AppLocalizations.supportedLocales
+                                  .firstWhere((Locale element) =>
+                                      element.languageCode == general.locale),
                               items: AppLocalizations.supportedLocales
                                   .map<DropdownMenuItem<Locale>>(
                                       (Locale option) {
+                                String languageOption = "English";
+                                if (option.languageCode == "en")
+                                  languageOption = "English";
+                                if (option.languageCode == "ar")
+                                  languageOption = "العربية";
                                 return DropdownMenuItem<Locale>(
                                   value: option,
-                                  child: Text(option.languageCode.toString()),
+                                  child: Text(languageOption),
                                 );
                               }).toList(),
                               onChanged: (Locale? option) {
