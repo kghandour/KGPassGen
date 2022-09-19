@@ -39,7 +39,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         final TextEditingController _renameController =
             TextEditingController(text: selectedConfig!.name);
 
-        String hashingAlgo = "KGP";
+        String hashingAlgo = "KGPG";
         if (selectedConfig!.hashingAlgorithm) {
           hashingAlgo = "SGP";
         }
@@ -156,7 +156,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     ),
 
                   Text(
-                    AppLocalizations.of(context)!.generalSettings,
+                    AppLocalizations.of(context)!.configurationSettings,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   Card(
