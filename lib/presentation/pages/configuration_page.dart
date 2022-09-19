@@ -22,6 +22,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   bool? showRenameField;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiValueListenableBuilder(
       first: Boxes.getGeneral().listenable(),

@@ -9,6 +9,7 @@ import 'package:kg_passgen/helper/initValues.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/pages/configuration_page.dart';
+import 'package:kg_passgen/presentation/pages/home_page.dart';
 import 'package:kg_passgen/presentation/pages/splash/splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             '/': (context) => OnboardingPage(),
-            '/home': (context) => MyHomePage(title: 'KG Password Generator'),
+            '/home': (context) => HomePage(),
             '/splash': (context) => OnboardingPage(),
             '/configurations': (context) => ConfigurationPage(),
           },
