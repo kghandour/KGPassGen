@@ -12,4 +12,7 @@ class General extends HiveObject {
 
   @HiveField(2)
   late int setConfiguration = 0;
+
+  @HiveField(3)
+  late String locale = "en";
 }

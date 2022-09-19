@@ -8,7 +8,6 @@
     "renameTextField": "اعادة تسمية",
     "lastModified":"اخر تعديل",
     "configurationSettings": "اعدادات خاصة",
-    "generalSettings": "الاعدادات العامة",
     "hashingAlgorithm": "خوارزمية التجزئة",
     "hashingAlgorithmDescription": "الخيارات: \nKGPG يُنشئ كلمات مرور عالية التعقيد يجب أن تحتوي على أحرف كبيرة وأحرف صغيرة ورموز وأرقام. \nSGP ينشئ  كلمة مرور تحتوي على أحرف كبيرة وصغيرة وأرقام.",
     "hashingFunction": "عمل التجزئة",
@@ -16,5 +15,7 @@
     "generatedPWLength": "طول كلمة المرور التي تم إنشاؤها",
     "validatePassword": "تحقق من صحة إدخال كلمة المرور",
     "stripSubdomain": "تجريد العنوان الفرعي",
-    "backToHome":"العودة الي الصفحة الرئيسية"
+    "backToHome":"العودة الي الصفحة الرئيسية",
+    "generalSettings": "الاعدادات العامة",
+    "appLanguage": "لغة البرنامج"
 }

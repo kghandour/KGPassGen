@@ -268,6 +268,46 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         " " +
                         selectedConfig!.editDate.toString()),
                   ),
+                  Text(
+                    AppLocalizations.of(context)!.generalSettings,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: Text(
+                              AppLocalizations.of(context)!.appLanguage,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            trailing: DropdownButton<Locale>(
+                              value: Locale(general.locale, ''),
+                              items: AppLocalizations.supportedLocales
+                                  .map<DropdownMenuItem<Locale>>(
+                                      (Locale option) {
+                                return DropdownMenuItem<Locale>(
+                                  value: option,
+                                  child: Text(option.languageCode.toString()),
+                                );
+                              }).toList(),
+                              onChanged: (Locale? option) {
+                                // This is called when the user selects an item.
+                                setState(() {
+                                  GeneralController.updateAppLocale(
+                                      general, option!.languageCode);
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/home');

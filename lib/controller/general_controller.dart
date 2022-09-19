@@ -24,4 +24,9 @@ class GeneralController {
     general.showChangelog = showChangelog;
     general.save();
   }
+
+  static void updateAppLocale(General general, String locale) {
+    general.locale = locale;
+    general.save();
+  }
 }
