@@ -14,9 +14,19 @@
     "hashingFunctionDescription": "الخيارات:\nMD5 او SHA512.",
     "generatedPWLength": "طول كلمة المرور التي تم إنشاؤها",
     "validatePassword": "تحقق من صحة إدخال كلمة المرور",
-    "stripSubdomain": "تجريد العنوان الفرعي",
+    "stripSubdomain": "تجريد العنوان الفرعي و المخرج",
     "backToHome":"العودة الي الصفحة الرئيسية",
     "generalSettings": "الاعدادات العامة",
     "appLanguage": "لغة البرنامج",
-    "darkMode": "تشغيل النظام الليلي"
+    "darkMode": "تشغيل النظام الليلي",
+    "websiteLabel":"رابط الموقع",
+    "websiteFieldHint":"ادخل رابط الموقع",
+    "masterPasswordLabel":"كلمة السر الرئيسية",
+    "masterPasswordHint":"ادخل كلمة السر الرئيسية",
+    "showPassword": "اظهار كلمة السر",
+    "generatePassword":"إنشاء كلمة المرور",
+    "fieldValidation":"لا يمكن أن يكون الخانة فارغًا",
+    "urlValidation":"الرجاء إدخال عنوان url أو عنوان IP صالح",
+    "passwordValidation":"يجب أن تتضمن كلمة المرور أحرفًا صغيرة وكبيرة ورقمًا ورمزًا. يجب أن يكون الحد الأدنى من 8 أحرف و تستخدم احرف انجليزية فقط",
+    "copy":"نقل"
 }

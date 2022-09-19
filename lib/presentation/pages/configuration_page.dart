@@ -217,23 +217,29 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                                   ),
                                   Row(
                                     children: [
-                                      IconButton(
-                                        icon: Icon(Icons.remove),
-                                        onPressed: () => setState(() {
-                                          ConfigurationController
-                                              .updatePWLength(selectedConfig!,
-                                                  selectedConfig!.pwLength - 1);
-                                        }),
-                                      ),
+                                      if (selectedConfig!.pwLength > 8)
+                                        IconButton(
+                                          icon: Icon(Icons.remove),
+                                          onPressed: () => setState(() {
+                                            ConfigurationController
+                                                .updatePWLength(
+                                                    selectedConfig!,
+                                                    selectedConfig!.pwLength -
+                                                        1);
+                                          }),
+                                        ),
                                       Text(selectedConfig!.pwLength.toString()),
-                                      IconButton(
-                                        icon: Icon(Icons.add),
-                                        onPressed: () => setState(() {
-                                          ConfigurationController
-                                              .updatePWLength(selectedConfig!,
-                                                  selectedConfig!.pwLength + 1);
-                                        }),
-                                      ),
+                                      if (selectedConfig!.pwLength < 24)
+                                        IconButton(
+                                          icon: Icon(Icons.add),
+                                          onPressed: () => setState(() {
+                                            ConfigurationController
+                                                .updatePWLength(
+                                                    selectedConfig!,
+                                                    selectedConfig!.pwLength +
+                                                        1);
+                                          }),
+                                        ),
                                     ],
                                   ),
                                 ]),

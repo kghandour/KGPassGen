@@ -14,9 +14,19 @@
     "hashingFunctionDescription": "Options:\nMD5 or SHA512.",
     "generatedPWLength": "Generated Password Length",
     "validatePassword": "Validate Input Password",
-    "stripSubdomain": "Strip Subdomain",
+    "stripSubdomain": "Strip Subdomain and Port",
     "backToHome": "Back to Homepage",
     "generalSettings": "General Settings",
     "appLanguage": "Application Language",
-    "darkMode":"Dark Mode"
+    "darkMode":"Dark Mode",
+    "websiteLabel":"Website URL",
+    "websiteFieldHint":"Enter the website URL",
+    "masterPasswordLabel":"Master Password",
+    "masterPasswordHint":"Enter the master password",
+    "showPassword":"Show Password",
+    "generatePassword":"Generate Password",
+    "fieldValidation":"Field cannot be empty",
+    "urlValidation":"Please enter a valid url or ip address",
+    "passwordValidation":"Password must include a lowercase and an uppercase character, a number and a symbol. It must also be a minimum of 8 characters and only English(latin) letters.",
+    "copy":"Copy"
 }
