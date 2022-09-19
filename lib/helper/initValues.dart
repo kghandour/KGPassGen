@@ -1,12 +1,13 @@
 import 'dart:developer';
 
+import 'package:hive/hive.dart';
 import 'package:kg_passgen/controller/configuration_controller.dart';
 import 'package:kg_passgen/controller/general_controller.dart';
 import 'package:kg_passgen/model/general.dart';
 
 import '../model/configuration.dart';
 
-List initializeGeneralConfig(configurationBox, generalBox) {
+List initializeGeneralConfig(Box configurationBox, Box generalBox) {
   final configurations = configurationBox.values.toList().cast<Configuration>();
   final generalOptions = generalBox.values.toList().cast<General>();
 
@@ -23,7 +24,7 @@ List initializeGeneralConfig(configurationBox, generalBox) {
     config = Configuration();
     ConfigurationController.addConfiguration(config, configurationBox);
   } else {
-    config = configurations[general.setConfiguration];
+    config = configurationBox.get(general.setConfiguration);
   }
 
   return [configurations, generalOptions, config, general];

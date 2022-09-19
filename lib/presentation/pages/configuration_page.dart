@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
 import 'package:kg_passgen/controller/configuration_controller.dart';
+import 'package:kg_passgen/controller/general_controller.dart';
 import 'package:kg_passgen/helper/initValues.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
@@ -32,7 +32,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         final general = inits[3] as General;
 
         String hashingAlgo = "KGP";
-        selectedConfig ??= config;
+        selectedConfig = config;
         if (selectedConfig!.hashingAlgorithm) {
           hashingAlgo = "SGP";
         }
@@ -48,11 +48,14 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               padding: const EdgeInsets.all(16.0),
               child: ListView(
                 children: [
+                  // Page Title
                   Text(
                     "Settings",
                     style: Theme.of(context).textTheme.headline4,
                   ),
+                  // Configuration tile
                   ListTile(
+                    // Dropdown
                     leading: DropdownButton<Configuration>(
                       value: selectedConfig,
                       items: configurations
@@ -66,11 +69,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       onChanged: (Configuration? option) {
                         // This is called when the user selects an item.
                         setState(() {
-                          selectedConfig = option!;
-                          log(selectedConfig!.name.toString());
+                          GeneralController.updateSelectedConfiguration(
+                              general, option!.key);
                         });
                       },
                     ),
+                    // Add config button
                     trailing: TextButton(
                       onPressed: () {
                         Configuration newConfig = Configuration();
@@ -190,7 +194,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red.shade400,
                         minimumSize: const Size.fromHeight(120)),
-                    child: Text(
+                    child: const Text(
                       'Home',
                     ),
                   )

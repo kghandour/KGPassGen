@@ -9,4 +9,19 @@ class GeneralController {
   static void addGeneral(General general, Box box) {
     box.add(general);
   }
+
+  static void updateSelectedConfiguration(General general, int selectedConfig) {
+    general.setConfiguration = selectedConfig;
+    general.save();
+  }
+
+  static void updateShowGuide(General general, bool showGuide) {
+    general.showGuide = showGuide;
+    general.save();
+  }
+
+  static void updateShowChangelog(General general, bool showChangelog) {
+    general.showChangelog = showChangelog;
+    general.save();
+  }
 }
