@@ -18,6 +18,7 @@ class ConfigurationPage extends StatefulWidget {
 class _ConfigurationPageState extends State<ConfigurationPage> {
   final List<Configuration> configurations = [];
   Configuration? selectedConfig;
+  bool? showRenameField;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         final config = inits[2] as Configuration;
         final general = inits[3] as General;
 
-        String hashingAlgo = "KGP";
+        if (showRenameField == null) showRenameField = false;
         selectedConfig = config;
+
+        final TextEditingController _renameController =
+            TextEditingController(text: selectedConfig!.name);
+
+        String hashingAlgo = "KGP";
         if (selectedConfig!.hashingAlgorithm) {
           hashingAlgo = "SGP";
         }
@@ -54,38 +60,89 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   // Configuration tile
-                  ListTile(
-                    // Dropdown
-                    leading: DropdownButton<Configuration>(
-                      value: selectedConfig,
-                      items: configurations
-                          .map<DropdownMenuItem<Configuration>>(
-                              (Configuration option) {
-                        return DropdownMenuItem<Configuration>(
-                          value: option,
-                          child: Text(option.name),
-                        );
-                      }).toList(),
-                      onChanged: (Configuration? option) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          GeneralController.updateSelectedConfiguration(
-                              general, option!.key);
-                        });
-                      },
-                    ),
-                    // Add config button
-                    trailing: TextButton(
-                      onPressed: () {
-                        Configuration newConfig = Configuration();
-                        newConfig.name =
-                            "Configuration " + configurations.length.toString();
-                        ConfigurationController.addConfiguration(
-                            newConfig, configurationBox);
-                      },
-                      child: Text("New Configuration"),
-                    ),
+                  Row(
+                    children: [
+                      DropdownButton<Configuration>(
+                        value: selectedConfig,
+                        items: configurations
+                            .map<DropdownMenuItem<Configuration>>(
+                                (Configuration option) {
+                          return DropdownMenuItem<Configuration>(
+                            value: option,
+                            child: Text(option.name),
+                          );
+                        }).toList(),
+                        onChanged: (Configuration? option) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            GeneralController.updateSelectedConfiguration(
+                                general, option!.key);
+                          });
+                        },
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          Configuration newConfig = Configuration();
+                          newConfig.name = "Configuration " +
+                              configurations.length.toString();
+                          ConfigurationController.addConfiguration(
+                              newConfig, configurationBox);
+                        },
+                        icon: Icon(Icons.add),
+                        label: Text("New"),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          if (configurations.length > 1) {
+                            ConfigurationController.deleteConfiguration(
+                                selectedConfig!);
+                            configurations.remove(selectedConfig);
+                            GeneralController.updateSelectedConfiguration(
+                                general, configurations[0].key);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "There must exist a single configuration.")));
+                          }
+                        },
+                        icon: Icon(Icons.remove),
+                        label: Text("Delete"),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            showRenameField = !showRenameField!;
+                          });
+                        },
+                        icon: Icon(Icons.edit),
+                        label: Text("Rename"),
+                      ),
+                    ],
                   ),
+                  if (showRenameField!)
+                    Row(
+                      children: [
+                        Container(
+                          width: 280,
+                          child: TextField(
+                            controller: _renameController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Rename Text',
+                            ),
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
+                            ConfigurationController.updateName(
+                                selectedConfig!, _renameController.text);
+                            showRenameField = false;
+                          },
+                          icon: Icon(Icons.save),
+                          label: Text("Save"),
+                        ),
+                      ],
+                    ),
                   Text("Last modified " + selectedConfig!.editDate.toString()),
                   Text(
                     "General Settings",

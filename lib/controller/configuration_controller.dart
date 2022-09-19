@@ -67,4 +67,9 @@ class ConfigurationController {
   static void addConfiguration(Configuration configuration, Box box) {
     box.add(configuration);
   }
+
+  static void updateName(Configuration configuration, String name) {
+    configuration.name = name;
+    configuration.save();
+  }
 }
