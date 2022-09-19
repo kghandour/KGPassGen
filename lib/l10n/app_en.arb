@@ -14,5 +14,6 @@
     "hashingFunctionDescription": "Options:\nMD5 or SHA512.",
     "generatedPWLength": "Generated Password Length",
     "validatePassword": "Validate Input Password",
-    "stripSubdomain": "Strip Subdomain"
+    "stripSubdomain": "Strip Subdomain",
+    "backToHome": "Back to Homepage"
 }

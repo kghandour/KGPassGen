@@ -14,5 +14,6 @@
     "hashingFunctionDescription": "الخيارات:\nMD5 او SHA512.",
     "generatedPWLength": "طول كلمة المرور التي تم إنشاؤها",
     "validatePassword": "تحقق من صحة إدخال كلمة المرور",
-    "stripSubdomain": "تجريد العنوان الفرعي"
+    "stripSubdomain": "تجريد العنوان الفرعي",
+    "backToHome":"العودة الي الصفحة الرئيسية"
 }

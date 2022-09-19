@@ -56,9 +56,18 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               child: ListView(
                 children: [
                   // Page Title
-                  Text(
-                    AppLocalizations.of(context)!.settings,
-                    style: Theme.of(context).textTheme.headline4,
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushReplacementNamed('/home');
+                          },
+                          icon: Icon(Icons.arrow_back_ios)),
+                      Text(
+                        AppLocalizations.of(context)!.settings,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ],
                   ),
                   // Configuration tile
                   Row(
@@ -80,6 +89,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                                 general, option!.key);
                           });
                         },
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            showRenameField = !showRenameField!;
+                          });
+                        },
+                        icon: Icon(Icons.edit),
+                        label: Text(AppLocalizations.of(context)!.rename),
                       ),
                       TextButton.icon(
                         onPressed: () {
@@ -109,15 +127,6 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         icon: Icon(Icons.remove),
                         label: Text(AppLocalizations.of(context)!.delete),
                       ),
-                      TextButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            showRenameField = !showRenameField!;
-                          });
-                        },
-                        icon: Icon(Icons.edit),
-                        label: Text(AppLocalizations.of(context)!.rename),
-                      ),
                     ],
                   ),
                   if (showRenameField!)
@@ -145,9 +154,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         ),
                       ],
                     ),
-                  Text(AppLocalizations.of(context)!.lastModified +
-                      " " +
-                      selectedConfig!.editDate.toString()),
+
                   Text(
                     AppLocalizations.of(context)!.generalSettings,
                     style: Theme.of(context).textTheme.headline6,
@@ -255,6 +262,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text(AppLocalizations.of(context)!.lastModified +
+                        " " +
+                        selectedConfig!.editDate.toString()),
+                  ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/home');
@@ -264,7 +277,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             borderRadius: BorderRadius.circular(5)),
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red.shade400,
-                        minimumSize: const Size.fromHeight(120)),
+                        minimumSize: const Size.fromHeight(60)),
                     child: Text(
                       AppLocalizations.of(context)!.homePage,
                     ),
