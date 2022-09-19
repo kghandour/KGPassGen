@@ -1,0 +1,12 @@
+{
+    "settings": "Settings",
+    "newConfig":"New",
+    "delete":"Delete",
+    "rename":"Rename",
+    "save": "Save",
+    "renameTextField": "Rename Configuration",
+    "lastModified":"Last Modified",
+    "generalSettings": "General Settings",
+    "hashingAlgorithm": "Hashing Algorithm",
+    "hashingAlgorithmDescription": "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."
+}

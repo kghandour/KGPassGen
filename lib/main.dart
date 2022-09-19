@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/pages/configuration_page.dart';
 import 'package:kg_passgen/presentation/pages/splash/splash.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized;
@@ -26,6 +28,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'KG Password Generator',
+      localizationsDelegates: [
+        AppLocalizations.delegate, // Add this line
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('ar', ''),
+      ],
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
@@ -60,6 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Locale activeLocale = Localizations.localeOf(context);
+    // If our active locale is fr_CA
+    debugPrint(activeLocale.languageCode); // => fr
+    debugPrint(activeLocale.countryCode); // => CA
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by

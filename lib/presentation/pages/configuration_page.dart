@@ -9,6 +9,7 @@ import 'package:kg_passgen/helper/initValues.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConfigurationPage extends StatefulWidget {
   @override
@@ -56,7 +57,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 children: [
                   // Page Title
                   Text(
-                    "Settings",
+                    AppLocalizations.of(context)!.settings,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   // Configuration tile
@@ -89,7 +90,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                               newConfig, configurationBox);
                         },
                         icon: Icon(Icons.add),
-                        label: Text("New"),
+                        label: Text(AppLocalizations.of(context)!.newConfig),
                       ),
                       TextButton.icon(
                         onPressed: () {
@@ -106,7 +107,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           }
                         },
                         icon: Icon(Icons.remove),
-                        label: Text("Delete"),
+                        label: Text(AppLocalizations.of(context)!.delete),
                       ),
                       TextButton.icon(
                         onPressed: () {
@@ -115,7 +116,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           });
                         },
                         icon: Icon(Icons.edit),
-                        label: Text("Rename"),
+                        label: Text(AppLocalizations.of(context)!.rename),
                       ),
                     ],
                   ),
@@ -126,9 +127,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           width: 280,
                           child: TextField(
                             controller: _renameController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              hintText: 'Rename Text',
+                              hintText:
+                                  AppLocalizations.of(context)!.renameTextField,
                             ),
                           ),
                         ),
@@ -139,13 +141,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             showRenameField = false;
                           },
                           icon: Icon(Icons.save),
-                          label: Text("Save"),
+                          label: Text(AppLocalizations.of(context)!.save),
                         ),
                       ],
                     ),
-                  Text("Last modified " + selectedConfig!.editDate.toString()),
+                  Text(AppLocalizations.of(context)!.lastModified +
+                      " " +
+                      selectedConfig!.editDate.toString()),
                   Text(
-                    "General Settings",
+                    AppLocalizations.of(context)!.generalSettings,
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   Card(
@@ -157,9 +161,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       child: Column(
                         children: [
                           SwitchListTile(
-                              title: Text("Hashing Algorithm: " + hashingAlgo),
-                              subtitle: Text(
-                                  "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."),
+                              title: Text(AppLocalizations.of(context)!
+                                      .hashingAlgorithm +
+                                  " " +
+                                  hashingAlgo),
+                              subtitle: Text(AppLocalizations.of(context)!
+                                  .hashingAlgorithmDescription),
                               value: selectedConfig!.hashingAlgorithm,
                               onChanged: (bool value) {
                                 setState(() {
