@@ -19,6 +19,7 @@ Future main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ConfigurationAdapter());
   Hive.registerAdapter(GeneralAdapter());
+
   await Hive.openBox<Configuration>('configurations');
   await Hive.openBox<General>('general');
 
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
         var localeSet = Locale(general.locale);
         if (localeSet == null) localeSet = Locale('en', '');
 
+        var darkMode = general.darkMode;
+        if (darkMode == null) darkMode = false;
+
         return MaterialApp(
           title: 'KG Password Generator',
           localizationsDelegates: [
@@ -52,6 +56,8 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           locale: localeSet,
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          darkTheme: ThemeData.dark(),
           theme: ThemeData(
             primarySwatch: Colors.red,
           ),

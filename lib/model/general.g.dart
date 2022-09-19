@@ -20,13 +20,14 @@ class GeneralAdapter extends TypeAdapter<General> {
       ..showGuide = fields[0] as bool
       ..showChangelog = fields[1] as bool
       ..setConfiguration = fields[2] as int
-      ..locale = fields[3] as String;
+      ..locale = fields[3] as String
+      ..darkMode = fields[4] as bool;
   }
 
   @override
   void write(BinaryWriter writer, General obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.showGuide)
       ..writeByte(1)
@@ -34,7 +35,9 @@ class GeneralAdapter extends TypeAdapter<General> {
       ..writeByte(2)
       ..write(obj.setConfiguration)
       ..writeByte(3)
-      ..write(obj.locale);
+      ..write(obj.locale)
+      ..writeByte(4)
+      ..write(obj.darkMode);
   }
 
   @override

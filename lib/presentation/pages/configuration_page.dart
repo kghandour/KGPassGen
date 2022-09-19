@@ -310,7 +310,17 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                                 });
                               },
                             ),
-                          )
+                          ),
+                          CheckboxListTile(
+                              title:
+                                  Text(AppLocalizations.of(context)!.darkMode),
+                              value: general.darkMode,
+                              onChanged: (value) {
+                                setState(() {
+                                  GeneralController.updateDarkMode(
+                                      general, value!);
+                                });
+                              })
                         ],
                       ),
                     ),

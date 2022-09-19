@@ -29,4 +29,9 @@ class GeneralController {
     general.locale = locale;
     general.save();
   }
+
+  static void updateDarkMode(General general, bool darkMode) {
+    general.darkMode = darkMode;
+    general.save();
+  }
 }

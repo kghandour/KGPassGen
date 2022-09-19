@@ -15,4 +15,7 @@ class General extends HiveObject {
 
   @HiveField(3)
   late String locale = "en";
+
+  @HiveField(4)
+  late bool darkMode = false;
 }

@@ -17,5 +17,6 @@
     "stripSubdomain": "Strip Subdomain",
     "backToHome": "Back to Homepage",
     "generalSettings": "General Settings",
-    "appLanguage": "Application Language"
+    "appLanguage": "Application Language",
+    "darkMode":"Dark Mode"
 }

@@ -17,5 +17,6 @@
     "stripSubdomain": "تجريد العنوان الفرعي",
     "backToHome":"العودة الي الصفحة الرئيسية",
     "generalSettings": "الاعدادات العامة",
-    "appLanguage": "لغة البرنامج"
+    "appLanguage": "لغة البرنامج",
+    "darkMode": "تشغيل النظام الليلي"
 }
