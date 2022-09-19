@@ -1,4 +1,5 @@
 {
+    "homePage": "Home",
     "settings": "Settings",
     "newConfig":"New",
     "delete":"Delete",
@@ -8,5 +9,10 @@
     "lastModified":"Last Modified",
     "generalSettings": "General Settings",
     "hashingAlgorithm": "Hashing Algorithm",
-    "hashingAlgorithmDescription": "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers."
+    "hashingAlgorithmDescription": "Options:\nKGP generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers.",
+    "hashingFunction": "Hashing Function",
+    "hashingFunctionDescription": "Options:\nMD5 or SHA512.",
+    "generatedPWLength": "Generated Password Length",
+    "validatePassword": "Validate Input Password",
+    "stripSubdomain": "Strip Subdomain"
 }

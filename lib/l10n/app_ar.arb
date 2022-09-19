@@ -1,4 +1,5 @@
 {
+    "homePage": "الصفحة الرئيسية",
     "settings": "الاعدادات",
     "newConfig":"اضف اعداد",
     "delete":"حذف اعداد",
@@ -8,5 +9,10 @@
     "lastModified":"اخر تعديل",
     "generalSettings": "الاعدادات العامة",
     "hashingAlgorithm": "خوارزمية التجزئة",
-    "hashingAlgorithmDescription": "الخيارات: \nKGP يُنشئ كلمات مرور عالية التعقيد يجب أن تحتوي على أحرف كبيرة وأحرف صغيرة ورموز وأرقام. \nSGP ينشئ  كلمة مرور تحتوي على أحرف كبيرة وصغيرة وأرقام."
+    "hashingAlgorithmDescription": "الخيارات: \nKGP يُنشئ كلمات مرور عالية التعقيد يجب أن تحتوي على أحرف كبيرة وأحرف صغيرة ورموز وأرقام. \nSGP ينشئ  كلمة مرور تحتوي على أحرف كبيرة وصغيرة وأرقام.",
+    "hashingFunction": "عمل التجزئة",
+    "hashingFunctionDescription": "الخيارات:\nMD5 او SHA512.",
+    "generatedPWLength": "طول كلمة المرور التي تم إنشاؤها",
+    "validatePassword": "تحقق من صحة إدخال كلمة المرور",
+    "stripSubdomain": "تجريد العنوان الفرعي"
 }

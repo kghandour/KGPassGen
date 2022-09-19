@@ -176,8 +176,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                               }),
                           Divider(),
                           SwitchListTile(
-                              title: Text("Hashing Function: " + hashingFn),
-                              subtitle: Text("Options:\nMD5 or SHA512."),
+                              title: Text(AppLocalizations.of(context)!
+                                      .hashingFunction +
+                                  " " +
+                                  hashingFn),
+                              subtitle: Text(AppLocalizations.of(context)!
+                                  .hashingFunctionDescription),
                               value: selectedConfig!.hashingFunction,
                               onChanged: (bool value) {
                                 setState(() {
@@ -194,7 +198,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Generated Password Length",
+                                    AppLocalizations.of(context)!
+                                        .generatedPWLength,
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
@@ -223,7 +228,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           ),
                           Divider(),
                           CheckboxListTile(
-                            title: Text("Validate Input Password"),
+                            title: Text(
+                                AppLocalizations.of(context)!.validatePassword),
                             value: selectedConfig!.validateInputpw,
                             onChanged: (value) {
                               log(value.toString());
@@ -234,7 +240,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             },
                           ),
                           CheckboxListTile(
-                            title: Text("Strip subdomain"),
+                            title: Text(
+                                AppLocalizations.of(context)!.stripSubdomain),
                             value: selectedConfig!.stripSubDomain,
                             onChanged: (value) {
                               log(value.toString());
@@ -258,8 +265,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red.shade400,
                         minimumSize: const Size.fromHeight(120)),
-                    child: const Text(
-                      'Home',
+                    child: Text(
+                      AppLocalizations.of(context)!.homePage,
                     ),
                   )
                 ],
