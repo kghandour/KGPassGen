@@ -19,31 +19,36 @@ class PrivacyPolicy extends StatelessWidget {
         drawer: NavigationDrawer(),
         body: Builder(builder: (scaffoldContext) {
           return SafeArea(
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(children: [
-                    if (_showSidebar) NavigationSidebar(),
-                    Expanded(
-                        child: ListView(
-                      children: [
-                        ListTile(
-                          leading: !_showSidebar
-                              ? IconButton(
-                                  onPressed: () {
-                                    Scaffold.of(scaffoldContext).openDrawer();
-                                  },
-                                  icon: Icon(Icons.menu))
-                              : null,
-                          title: Text(
-                            AppLocalizations.of(context)!.privacyPolicy,
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ),
-                        SelectableText(
-                            AppLocalizations.of(context)!.privacyPolicyText),
-                      ],
-                    ))
-                  ])));
+              child: Row(children: [
+            if (_showSidebar) NavigationSidebar(),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView(
+                children: [
+                  Row(
+                    children: [
+                      if (!_showSidebar)
+                        IconButton(
+                            onPressed: () {
+                              Scaffold.of(scaffoldContext).openDrawer();
+                            },
+                            icon: Icon(Icons.menu)),
+                      Text(
+                        AppLocalizations.of(context)!.privacyPolicy,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectableText(
+                        AppLocalizations.of(context)!.privacyPolicyText),
+                  ),
+                ],
+              ),
+            ))
+          ]));
         }));
   }
 }

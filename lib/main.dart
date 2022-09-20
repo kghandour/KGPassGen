@@ -13,6 +13,9 @@ import 'package:kg_passgen/presentation/pages/home_page.dart';
 import 'package:kg_passgen/presentation/pages/privacyPolicy.dart';
 import 'package:kg_passgen/presentation/pages/splash/splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kg_passgen/presentation/pages/whatsNew.dart';
+import 'package:kg_passgen/presentation/themes/darkTheme.dart';
+import 'package:kg_passgen/presentation/themes/lightTheme.dart';
 import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
 
 Future main() async {
@@ -63,18 +66,66 @@ class MyApp extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           locale: localeSet,
           themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
-          darkTheme: ThemeData.dark(),
-          theme: ThemeData(
-            primarySwatch: Colors.red,
-          ),
+          darkTheme: DarkTheme.darkTheme,
+          theme: LightTheme.lightTheme,
           initialRoute: '/',
-          routes: {
-            '/': (context) => showSplash ? OnboardingPage() : HomePage(),
-            '/home': (context) => HomePage(),
-            '/splash': (context) => OnboardingPage(),
-            '/configurations': (context) => ConfigurationPage(),
-            '/privacy': (context) => PrivacyPolicy(),
+          onGenerateRoute: (settings) {
+            if (settings.name == "/home") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => HomePage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/splash") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => OnboardingPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/privacy") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => PrivacyPolicy(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/configurations") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => ConfigurationPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/whatsnew") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => WhatsNewPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            // Unknown route
+            return MaterialPageRoute(
+                builder: (_) => showSplash ? OnboardingPage() : HomePage());
           },
+          // routes: {
+          //   '/': (context) => showSplash ? OnboardingPage() : HomePage(),
+          //   '/home': (context) => HomePage(),
+          //   '/splash': (context) => OnboardingPage(),
+          //   '/configurations': (context) => ConfigurationPage(),
+          //   '/privacy': (context) => PrivacyPolicy(),
+          // },
         );
       },
     );
