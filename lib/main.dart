@@ -49,6 +49,9 @@ class MyApp extends StatelessWidget {
         var darkMode = general.darkMode;
         if (darkMode == null) darkMode = false;
 
+        var showSplash = general.showGuide;
+        if (showSplash == null) general.showGuide = true;
+
         return MaterialApp(
           title: 'KG Password Generator',
           localizationsDelegates: [
@@ -66,7 +69,7 @@ class MyApp extends StatelessWidget {
           ),
           initialRoute: '/',
           routes: {
-            '/': (context) => OnboardingPage(),
+            '/': (context) => showSplash ? OnboardingPage() : HomePage(),
             '/home': (context) => HomePage(),
             '/splash': (context) => OnboardingPage(),
             '/configurations': (context) => ConfigurationPage(),

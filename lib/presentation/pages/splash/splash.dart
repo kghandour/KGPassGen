@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:kg_passgen/controller/boxes.dart';
+import 'package:kg_passgen/controller/general_controller.dart';
+import 'package:kg_passgen/helper/initValues.dart';
+import 'package:kg_passgen/model/configuration.dart';
+import 'package:kg_passgen/model/general.dart';
+import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:kg_passgen/presentation/pages/splash/page_template.dart';
 
@@ -21,60 +28,71 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(bottom: 120),
-        child: PageView(
-          controller: controller,
-          onPageChanged: (index) {
-            setState(() {
-              isLastPage = index == 2;
-            });
-          },
-          children: [
-            splashTemplate(
-              context: context,
-              urlImage: 'assets/splash-1.png',
-              color: Colors.white70,
-              title: 'One password to rule them all',
-              subtitle:
-                  'Now you only need to know one (master) password and KG Pass Generator will create a unique password for each website that you would like to visit.',
+    return MultiValueListenableBuilder(
+        first: Boxes.getGeneral().listenable(),
+        second: Boxes.getConfigurations().listenable(),
+        builder: (context, generalBox, configurationBox, _) {
+          List inits = initializeGeneralConfig(configurationBox, generalBox);
+          final configurations = inits[0] as List<Configuration>;
+          final generalSettings = inits[1];
+          final config = inits[2] as Configuration;
+          final general = inits[3] as General;
+          return Scaffold(
+            body: Container(
+              padding: const EdgeInsets.only(bottom: 120),
+              child: PageView(
+                controller: controller,
+                onPageChanged: (index) {
+                  setState(() {
+                    isLastPage = index == 2;
+                  });
+                },
+                children: [
+                  splashTemplate(
+                    context: context,
+                    urlImage: 'assets/splash-1.png',
+                    color: Colors.white70,
+                    title: 'One password to rule them all',
+                    subtitle:
+                        'Now you only need to know one (master) password and KG Pass Generator will create a unique password for each website that you would like to visit.',
+                  ),
+                  splashTemplate(
+                    context: context,
+                    urlImage: 'assets/splash-2.png',
+                    color: Colors.indigo,
+                    title: 'More security for you',
+                    subtitle:
+                        'Even if one website you use gets hacked, your other accounts are still secure. Never use the same password for more than one website.',
+                  ),
+                  splashTemplate(
+                    context: context,
+                    urlImage: 'assets/splash-3.png',
+                    color: Colors.green,
+                    title: 'Everything is on your device.',
+                    subtitle:
+                        'Fully Open-source. Completely free.  Nothing is transmitted.',
+                  ),
+                ],
+              ),
             ),
-            splashTemplate(
-              context: context,
-              urlImage: 'assets/splash-2.png',
-              color: Colors.indigo,
-              title: 'More security for you',
-              subtitle:
-                  'Even if one website you use gets hacked, your other accounts are still secure. Never use the same password for more than one website.',
-            ),
-            splashTemplate(
-              context: context,
-              urlImage: 'assets/splash-3.png',
-              color: Colors.green,
-              title: 'Everything is on your device.',
-              subtitle:
-                  'Fully Open-source. Completely free.  Nothing is transmitted.',
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: isLastPage
-          ? TextButton(
-              style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.red.shade400,
-                  minimumSize: const Size.fromHeight(120)),
-              onPressed: () async {
-                Navigator.of(context).pushReplacementNamed('/home');
-              },
-              child: const Text(
-                'Get Started',
-              ))
-          : InProgress(controller: controller),
-    );
+            bottomSheet: isLastPage
+                ? TextButton(
+                    style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red.shade400,
+                        minimumSize: const Size.fromHeight(120)),
+                    onPressed: () async {
+                      GeneralController.updateShowGuide(general, false);
+                      Navigator.of(context).pushReplacementNamed('/home');
+                    },
+                    child: const Text(
+                      'Get Started',
+                    ))
+                : InProgress(controller: controller),
+          );
+        });
   }
 }
 
