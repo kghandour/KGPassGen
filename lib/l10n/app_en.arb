@@ -42,5 +42,9 @@
     "whatsNewLaunchDownload":"Launch Download page",
     "whatsNewLaunchPlaystore":"Launch Google Playstore",
     "whatsNewAbout":"About KG Pass Gen",
-    "whatsNewAboutText":"\u2022 KG Pass Gen is a fully open-source password generator that is based on SuperGenPass while focusing on making your passwords more secure.\n\u2022 KG Pass Gen uses a set of Hashing function - one way hashing - to concatenate the website and the master password then hashes them using MD5 or SHA512. KG Pass Gen then iteratively keep on hashing the output until it satisfies the password requirements."
+    "whatsNewAboutText":"\u2022 KG Pass Gen is a fully open-source password generator that is based on SuperGenPass while focusing on making your passwords more secure.\n\u2022 KG Pass Gen uses a set of Hashing function - one way hashing - to concatenate the website and the master password then hashes them using MD5 or SHA512. KG Pass Gen then iteratively keep on hashing the output until it satisfies the password requirements.",
+    "whatsNewEasterEggTitle":"You found the Easter Egg!",
+    "whatsNewEasterEggText":"Just wanted to say, thank you for using this. Wanted to also tell you this:\n Never stop creating. Whatever your profession, no matter how busy you get in life, take a deep breathe, and spend time on what is important to you. Do your hoobbies, get better at them, spend time with your family and friends. You are never alone. One last thing: Never stop being awesome. \nAlso, I wonder if anyone actually found this? If you did why don't you let me know? If there is something I can do for you, reach out @itsKGhandour on Twitter. ",
+    "whatsNewEasterEggButton":"I will stay Awesome.",
+    "whatsNewEasterEggSnackBar":"Wait. Whats that? Press again..."
 }
