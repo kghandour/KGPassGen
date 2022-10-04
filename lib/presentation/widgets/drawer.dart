@@ -26,34 +26,40 @@ class DrawerList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text(AppLocalizations.of(context)!.homePage),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/home');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(AppLocalizations.of(context)!.settings),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/configurations');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.bookmark),
-              title: Text(AppLocalizations.of(context)!.whatsNew),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/whatsnew');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.privacy_tip),
-              title: Text(AppLocalizations.of(context)!.privacyPolicy),
-              onTap: () {
-                Navigator.of(context).pushReplacementNamed('/privacy');
-              },
+            Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text(AppLocalizations.of(context)!.homePage),
+                  onTap: () {
+                    Navigator.of(context).pushReplacementNamed('/home');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text(AppLocalizations.of(context)!.settings),
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed('/configurations');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.bookmark),
+                  title: Text(AppLocalizations.of(context)!.whatsNew),
+                  onTap: () {
+                    Navigator.of(context).pushReplacementNamed('/whatsnew');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.privacy_tip),
+                  title: Text(AppLocalizations.of(context)!.privacyPolicy),
+                  onTap: () {
+                    Navigator.of(context).pushReplacementNamed('/privacy');
+                  },
+                ),
+              ],
             ),
             ListTile(
               leading: Icon(Icons.help),

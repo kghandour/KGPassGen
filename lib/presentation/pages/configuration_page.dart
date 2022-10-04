@@ -123,6 +123,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           if (showRenameField!)
                             Row(
                               children: [
+                                Text(AppLocalizations.of(context)!.rename +
+                                    ": "),
                                 Container(
                                   width: 280,
                                   child: TextField(
@@ -390,11 +392,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         ),
         TextButton.icon(
           onPressed: () {
-            Configuration newConfig = Configuration();
-            newConfig.name =
-                "Configuration " + configurations.length.toString();
-            ConfigurationController.addConfiguration(
-                newConfig, configurationBox);
+            setState(() {
+              Configuration newConfig = Configuration();
+              newConfig.name =
+                  "Configuration " + configurations.length.toString();
+              ConfigurationController.addConfiguration(
+                  newConfig, configurationBox);
+              GeneralController.updateSelectedConfiguration(
+                  general, newConfig!.key);
+            });
           },
           icon: Icon(Icons.add),
           label: Text(AppLocalizations.of(context)!.newConfig),
@@ -408,7 +414,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                   general, configurations[0].key);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("There must exist a single configuration.")));
+                  content: Text(AppLocalizations.of(context)!.deleteError)));
             }
           },
           icon: Icon(Icons.remove),
