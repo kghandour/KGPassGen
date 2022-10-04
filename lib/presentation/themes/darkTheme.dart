@@ -18,6 +18,11 @@ class DarkTheme {
           padding: EdgeInsets.all(16),
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: new TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
       checkboxTheme:
           CheckboxThemeData(fillColor: MaterialStateProperty.all(Colors.red)),
     );

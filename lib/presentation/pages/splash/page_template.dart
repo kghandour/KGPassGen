@@ -5,50 +5,70 @@ Widget splashTemplate({
   required String title,
   required String subtitle,
   required BuildContext context,
-  String? urlImage,
+  required String urlImage,
 }) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
 
-  return Container(
-    color: Colors.white70,
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (urlImage != null)
-          Image.asset(
-            urlImage,
-            height: 0.4 * screenHeight,
-          ),
-        FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
+        Image.asset(
+          urlImage,
+          height: 0.22 * screenHeight,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
               title,
-              textAlign: TextAlign.start,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline6,
             ),
-          ),
-        ),
-        const SizedBox(
-          height: 24,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            subtitle,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 20,
-              fontWeight: FontWeight.normal,
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        )
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget singleSplashTemplate({
+  required Color color,
+  required String title,
+  required String subtitle,
+  required BuildContext context,
+  required String urlImage,
+}) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Image.asset(
+          urlImage,
+          height: 0.5 * screenHeight,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ],
+        ),
       ],
     ),
   );

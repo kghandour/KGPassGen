@@ -22,7 +22,13 @@ List initializeGeneralConfig(Box configurationBox, Box generalBox) {
 
   if (configurations.length == 0) {
     config = Configuration();
+    config.name = "Default: KGPG";
     ConfigurationController.addConfiguration(config, configurationBox);
+    Configuration sgpConfig = Configuration();
+    sgpConfig.name = "Default: SGP";
+    sgpConfig.hashingAlgorithm = true;
+    sgpConfig.pwLength = 10;
+    ConfigurationController.addConfiguration(sgpConfig, configurationBox);
   } else {
     config = configurations[0];
     if (general.setConfiguration != null && general.setConfiguration != 0)

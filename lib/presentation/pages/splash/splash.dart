@@ -8,6 +8,7 @@ import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:kg_passgen/presentation/pages/splash/page_template.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingPage extends StatefulWidget {
   @override
@@ -37,6 +38,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
           final generalSettings = inits[1];
           final config = inits[2] as Configuration;
           final general = inits[3] as General;
+
+          Size screenSize = MediaQuery.of(context).size;
+          Orientation orientation = MediaQuery.of(context).orientation;
+
+          bool _wideScreen =
+              (screenSize.width >= 800 && orientation == Orientation.landscape)
+                  ? true
+                  : false;
+
           return Scaffold(
             body: Container(
               padding: const EdgeInsets.only(bottom: 120),
@@ -48,29 +58,46 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   });
                 },
                 children: [
-                  splashTemplate(
-                    context: context,
-                    urlImage: 'assets/splash-1.png',
-                    color: Colors.white70,
-                    title: 'One password to rule them all',
-                    subtitle:
-                        'Now you only need to know one (master) password and KG Pass Generator will create a unique password for each website that you would like to visit.',
+                  ListView(
+                    children: [
+                      splashTemplate(
+                        context: context,
+                        urlImage: 'assets/splash-1.png',
+                        color: Colors.indigo,
+                        title: AppLocalizations.of(context)!.splash_1_1_title,
+                        subtitle:
+                            AppLocalizations.of(context)!.splash_1_1_subtitle,
+                      ),
+                      splashTemplate(
+                        context: context,
+                        urlImage: 'assets/splash-2.png',
+                        color: Colors.indigo,
+                        title: AppLocalizations.of(context)!.splash_1_2_title,
+                        subtitle:
+                            AppLocalizations.of(context)!.splash_1_2_subtitle,
+                      ),
+                      splashTemplate(
+                          context: context,
+                          urlImage: 'assets/splash-3.png',
+                          color: Colors.indigo,
+                          title: AppLocalizations.of(context)!.splash_1_3_title,
+                          subtitle: AppLocalizations.of(context)!
+                              .splash_1_3_subtitle),
+                    ],
                   ),
-                  splashTemplate(
+                  singleSplashTemplate(
                     context: context,
-                    urlImage: 'assets/splash-2.png',
+                    urlImage: 'assets/MainInterface.png',
                     color: Colors.indigo,
-                    title: 'More security for you',
-                    subtitle:
-                        'Even if one website you use gets hacked, your other accounts are still secure. Never use the same password for more than one website.',
+                    title: AppLocalizations.of(context)!.splash_2_title,
+                    subtitle: AppLocalizations.of(context)!.splash_2_subtitle,
                   ),
-                  splashTemplate(
+                  singleSplashTemplate(
                     context: context,
-                    urlImage: 'assets/splash-3.png',
+                    urlImage: 'assets/MultiConfig.png',
                     color: Colors.green,
-                    title: 'Everything is on your device.',
-                    subtitle:
-                        'Fully Open-source. Completely free.  Nothing is transmitted.',
+                    title: AppLocalizations.of(context)!.splash_3_title,
+                    subtitle: AppLocalizations.of(context)!.splash_3_subtitle,
                   ),
                 ],
               ),
@@ -87,8 +114,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       GeneralController.updateShowGuide(general, false);
                       Navigator.of(context).pushReplacementNamed('/home');
                     },
-                    child: const Text(
-                      'Get Started',
+                    child: Text(
+                      AppLocalizations.of(context)!.getStarted,
                     ))
                 : InProgress(controller: controller),
           );
@@ -107,6 +134,7 @@ class InProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.black12,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       height: 120,
       child: Row(
@@ -114,7 +142,9 @@ class InProgress extends StatelessWidget {
         children: [
           TextButton(
               onPressed: () => controller.jumpToPage(2),
-              child: const Text('Skip')),
+              child: Text(
+                AppLocalizations.of(context)!.skip,
+              )),
           Center(
             child: SmoothPageIndicator(
               controller: controller,
@@ -128,7 +158,9 @@ class InProgress extends StatelessWidget {
               onPressed: () => controller.nextPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut),
-              child: const Text('Next'))
+              child: Text(
+                AppLocalizations.of(context)!.next,
+              ))
         ],
       ),
     );

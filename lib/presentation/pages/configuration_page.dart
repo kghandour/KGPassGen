@@ -30,8 +30,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   void resetToDefaults(Box configurationBox, Box generalBox) {
     setState(() {
       Configuration config = Configuration();
-      config.name = "Default";
+      config.name = "Default: KGPG";
       ConfigurationController.addConfiguration(config, configurationBox);
+      Configuration sgpConfig = Configuration();
+      sgpConfig.name = "Default: SGP";
+      sgpConfig.hashingAlgorithm = true;
+      sgpConfig.pwLength = 10;
+      ConfigurationController.addConfiguration(sgpConfig, configurationBox);
       General general = General();
       GeneralController.addGeneral(general, generalBox);
 
@@ -39,7 +44,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       final configurations = inits[0] as List<Configuration>;
       final generalSettings = inits[1] as List<General>;
 
-      for (int i = 0; i < configurations.length - 1; i++) {
+      for (int i = 0; i < configurations.length - 2; i++) {
         ConfigurationController.deleteConfiguration(configurations[i]);
       }
 

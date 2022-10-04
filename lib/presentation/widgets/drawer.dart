@@ -55,6 +55,13 @@ class DrawerList extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed('/privacy');
               },
             ),
+            ListTile(
+              leading: Icon(Icons.help),
+              title: Text(AppLocalizations.of(context)!.splashTitle),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed('/splash');
+              },
+            ),
           ],
         ),
       ),
