@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
@@ -7,20 +5,22 @@ import 'package:kg_passgen/controller/configuration_controller.dart';
 import 'package:kg_passgen/controller/general_controller.dart';
 import 'package:kg_passgen/controller/home_controller.dart';
 import 'package:kg_passgen/helper/hashing.dart';
-import 'package:kg_passgen/helper/initValues.dart';
+import 'package:kg_passgen/helper/init_values.dart';
 import 'package:kg_passgen/helper/validation.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
-import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
+import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kg_passgen/presentation/widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final _urlController = TextEditingController();
   final _masterPasswordController = TextEditingController();
@@ -37,14 +37,13 @@ class _HomePageState extends State<HomePage> {
       builder: (context, generalBox, configurationBox, _) {
         List inits = initializeGeneralConfig(configurationBox, generalBox);
         final configurations = inits[0] as List<Configuration>;
-        final generalSettings = inits[1];
         final config = inits[2] as Configuration;
         final general = inits[3] as General;
 
         Size screenSize = MediaQuery.of(context).size;
         Orientation orientation = MediaQuery.of(context).orientation;
 
-        bool _showSidebar =
+        bool showSidebar =
             (screenSize.width >= 800 && orientation == Orientation.landscape)
                 ? true
                 : false;
@@ -52,18 +51,18 @@ class _HomePageState extends State<HomePage> {
         Configuration selectedConfig = config;
 
         return Scaffold(
-          drawer: !_showSidebar ? NavigationDrawer() : null,
+          drawer: !showSidebar ? const NavigationDrawer() : null,
           body: Builder(builder: (scaffoldContext) {
             return SafeArea(
               child: Row(
                 children: [
-                  if (_showSidebar) NavigationSidebar(),
+                  if (showSidebar) const NavigationSidebar(),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          upperBarWidget(_showSidebar, scaffoldContext,
+                          upperBarWidget(showSidebar, scaffoldContext,
                               selectedConfig, configurations, general, config),
                           passwordFormWidget(context, selectedConfig),
                           generatedPasswordWidget(selectedConfig, context),
@@ -116,30 +115,60 @@ class _HomePageState extends State<HomePage> {
                     }),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        _showGenerated == true
-                            ? _generatedPassword
-                            : '${_generatedPassword.replaceAll(RegExp(r"."), "*")}',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _showGenerated == true
+                                ? _generatedPassword
+                                : _generatedPassword.replaceAll(
+                                    RegExp(r"."), "*"),
+                          ),
+                          _showGenerated
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showGenerated = false;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.visibility_off))
+                              : IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showGenerated = true;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.visibility))
+                        ],
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(60)),
-                      onPressed: () {
+                IconButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      setState(() {
                         HomePageController.copyPassword(
                             _generatedPassword, context);
-                      },
-                      icon: Icon(Icons.copy),
-                      label: Text(AppLocalizations.of(context)!.copy),
-                    ),
-                  ),
-                ),
+                      });
+                    },
+                    icon: const Icon(Icons.copy)),
+                // Expanded(
+                //   flex: 2,
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(left: 8.0),
+                //     child: ElevatedButton.icon(
+                //       style: ElevatedButton.styleFrom(
+                //           minimumSize: const Size.fromHeight(60)),
+                //       onPressed: () {
+                //         HomePageController.copyPassword(
+                //             _generatedPassword, context);
+                //       },
+                //       icon: Icon(Icons.copy),
+                //       label: Text(AppLocalizations.of(context)!.copy),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
     );
@@ -174,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                 child: TextFormField(
                   controller: _urlController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     hintText: AppLocalizations.of(context)!.websiteFieldHint,
                   ),
                   keyboardType: TextInputType.url,
@@ -204,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                       child: TextFormField(
                         controller: _masterPasswordController,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           hintText:
                               AppLocalizations.of(context)!.masterPasswordHint,
                         ),
@@ -224,18 +253,21 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: CheckboxListTile(
-                        title: Text(AppLocalizations.of(context)!.showPassword),
-                        value: _showPassword,
-                        onChanged: (value) => {
-                          setState(() {
-                            _showPassword = value!;
-                          })
-                        },
-                      ),
-                    ),
+                    _showPassword
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showPassword = false;
+                              });
+                            },
+                            icon: const Icon(Icons.visibility_off))
+                        : IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showPassword = true;
+                              });
+                            },
+                            icon: const Icon(Icons.visibility))
                   ],
                 ),
               ),
@@ -247,7 +279,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Row upperBarWidget(
-      bool _showSidebar,
+      bool showSidebar,
       BuildContext scaffoldContext,
       Configuration selectedConfig,
       List<Configuration> configurations,
@@ -258,9 +290,9 @@ class _HomePageState extends State<HomePage> {
       children: [
         Row(
           children: [
-            if (!_showSidebar)
+            if (!showSidebar)
               IconButton(
-                icon: Icon(Icons.menu),
+                icon: const Icon(Icons.menu),
                 onPressed: () {
                   Scaffold.of(scaffoldContext).openDrawer();
                 },
@@ -287,7 +319,7 @@ class _HomePageState extends State<HomePage> {
         ),
         Row(
           children: [
-            Text("KGPG"),
+            const Text("KGPG"),
             Switch(
               value: selectedConfig.hashingAlgorithm,
               onChanged: (val) {
@@ -297,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             ),
-            Text("SGP"),
+            const Text("SGP"),
           ],
         ),
       ],

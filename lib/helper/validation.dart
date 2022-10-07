@@ -3,7 +3,7 @@ class Validation {
     String value = url.toLowerCase();
     var urlPattern =
         r"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?|^((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(:[0-9]{1,5})?(\/.*)?$";
-    var match = new RegExp(urlPattern, caseSensitive: false).firstMatch(value);
+    var match = RegExp(urlPattern, caseSensitive: false).firstMatch(value);
     if (match == null) return false;
     return true;
   }
@@ -11,7 +11,7 @@ class Validation {
   static bool passwordValidation(String value) {
     var urlPattern =
         r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])([a-zA-Z0-9#?!@$%^&*]){8,}$";
-    var match = new RegExp(urlPattern, caseSensitive: true).firstMatch(value);
+    var match = RegExp(urlPattern, caseSensitive: true).firstMatch(value);
     if (match == null) return false;
     if (value.length < 8) return false;
     return true;
@@ -26,15 +26,17 @@ class Validation {
     String value = v.substring(0, length);
     var urlPattern =
         r"(?=.*^[a-z])(?=.*[A-Z])(?=.*[0-9])([a-zA-Z0-9#?!@$%^&*]){8,}$";
-    var match = new RegExp(urlPattern, caseSensitive: true).firstMatch(value);
+    var match = RegExp(urlPattern, caseSensitive: true).firstMatch(value);
     if (match == null) return false;
-    if (algo == false) if (!value.contains("!") &&
-        !value.contains("#") &&
-        !value.contains("%") &&
-        !value.contains("@") &&
-        !value.contains("\$") &&
-        !value.contains("&")) {
-      return false;
+    if (algo == false) {
+      if (!value.contains("!") &&
+          !value.contains("#") &&
+          !value.contains("%") &&
+          !value.contains("@") &&
+          !value.contains("\$") &&
+          !value.contains("&")) {
+        return false;
+      }
     }
     return true;
   }

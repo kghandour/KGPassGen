@@ -1,22 +1,19 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
-import 'package:kg_passgen/helper/initValues.dart';
+import 'package:kg_passgen/helper/init_values.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
 import 'package:kg_passgen/presentation/pages/configuration_page.dart';
 import 'package:kg_passgen/presentation/pages/home_page.dart';
-import 'package:kg_passgen/presentation/pages/privacyPolicy.dart';
+import 'package:kg_passgen/presentation/pages/privacy_policy.dart';
 import 'package:kg_passgen/presentation/pages/splash/splash.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kg_passgen/presentation/pages/whatsNew.dart';
-import 'package:kg_passgen/presentation/themes/darkTheme.dart';
-import 'package:kg_passgen/presentation/themes/lightTheme.dart';
-import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
+import 'package:kg_passgen/presentation/pages/whats_new.dart';
+import 'package:kg_passgen/presentation/themes/dark_theme.dart';
+import 'package:kg_passgen/presentation/themes/light_theme.dart';
+import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized;
@@ -43,21 +40,17 @@ class MyApp extends StatelessWidget {
       second: Boxes.getConfigurations().listenable(),
       builder: (context, generalBox, configurationBox, _) {
         List inits = initializeGeneralConfig(configurationBox, generalBox);
-        final config = inits[2] as Configuration;
         final general = inits[3] as General;
 
         var localeSet = Locale(general.locale);
-        if (localeSet == null) localeSet = Locale('en', '');
 
         var darkMode = general.darkMode;
-        if (darkMode == null) darkMode = false;
 
         var showSplash = general.showGuide;
-        if (showSplash == null) general.showGuide = true;
 
         return MaterialApp(
           title: 'KG Password Generator',
-          localizationsDelegates: [
+          localizationsDelegates: const [
             AppLocalizations.delegate, // Add this line
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -74,7 +67,7 @@ class MyApp extends StatelessWidget {
               return PageRouteBuilder(
                 settings:
                     settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                pageBuilder: (_, __, ___) => HomePage(),
+                pageBuilder: (_, __, ___) => const HomePage(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               );
@@ -83,7 +76,7 @@ class MyApp extends StatelessWidget {
               return PageRouteBuilder(
                 settings:
                     settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                pageBuilder: (_, __, ___) => OnboardingPage(),
+                pageBuilder: (_, __, ___) => const OnboardingPage(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               );
@@ -92,7 +85,7 @@ class MyApp extends StatelessWidget {
               return PageRouteBuilder(
                 settings:
                     settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                pageBuilder: (_, __, ___) => PrivacyPolicy(),
+                pageBuilder: (_, __, ___) => const PrivacyPolicy(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               );
@@ -101,7 +94,7 @@ class MyApp extends StatelessWidget {
               return PageRouteBuilder(
                 settings:
                     settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                pageBuilder: (_, __, ___) => ConfigurationPage(),
+                pageBuilder: (_, __, ___) => const ConfigurationPage(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               );
@@ -110,14 +103,15 @@ class MyApp extends StatelessWidget {
               return PageRouteBuilder(
                 settings:
                     settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                pageBuilder: (_, __, ___) => WhatsNewPage(),
+                pageBuilder: (_, __, ___) => const WhatsNewPage(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
               );
             }
             // Unknown route
             return MaterialPageRoute(
-                builder: (_) => showSplash ? OnboardingPage() : HomePage());
+                builder: (_) =>
+                    showSplash ? const OnboardingPage() : const HomePage());
           },
           // routes: {
           //   '/': (context) => showSplash ? OnboardingPage() : HomePage(),

@@ -5,19 +5,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
 import 'package:kg_passgen/controller/configuration_controller.dart';
 import 'package:kg_passgen/controller/general_controller.dart';
-import 'package:kg_passgen/helper/initValues.dart';
+import 'package:kg_passgen/helper/init_values.dart';
 import 'package:kg_passgen/model/configuration.dart';
 import 'package:kg_passgen/model/general.dart';
-import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
+import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kg_passgen/presentation/widgets/drawer.dart';
 
 class ConfigurationPage extends StatefulWidget {
+  const ConfigurationPage({super.key});
+
   @override
-  _ConfigurationPageState createState() => _ConfigurationPageState();
+  ConfigurationPageState createState() => ConfigurationPageState();
 }
 
-class _ConfigurationPageState extends State<ConfigurationPage> {
+class ConfigurationPageState extends State<ConfigurationPage> {
   final List<Configuration> configurations = [];
   Configuration? selectedConfig;
   bool? showRenameField;
@@ -62,20 +64,19 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
       builder: (context, generalBox, configurationBox, _) {
         List inits = initializeGeneralConfig(configurationBox, generalBox);
         final configurations = inits[0] as List<Configuration>;
-        final generalSettings = inits[1];
         final config = inits[2] as Configuration;
         final general = inits[3] as General;
 
-        if (showRenameField == null) showRenameField = false;
+        showRenameField ??= false;
         selectedConfig = config;
 
-        final TextEditingController _renameController =
+        final TextEditingController renameController =
             TextEditingController(text: selectedConfig!.name);
 
         Size screenSize = MediaQuery.of(context).size;
         Orientation orientation = MediaQuery.of(context).orientation;
 
-        bool _showSidebar =
+        bool showSidebar =
             (screenSize.width >= 800 && orientation == Orientation.landscape)
                 ? true
                 : false;
@@ -91,12 +92,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         }
 
         return Scaffold(
-          drawer: !_showSidebar ? NavigationDrawer() : null,
+          drawer: !showSidebar ? const NavigationDrawer() : null,
           body: Builder(builder: (scaffoldContext) {
             return SafeArea(
               child: Row(
                 children: [
-                  if (_showSidebar) NavigationSidebar(),
+                  if (showSidebar) const NavigationSidebar(),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -105,12 +106,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           // Page Title
                           Row(
                             children: [
-                              if (!_showSidebar)
+                              if (!showSidebar)
                                 IconButton(
                                     onPressed: () {
                                       Scaffold.of(scaffoldContext).openDrawer();
                                     },
-                                    icon: Icon(Icons.menu)),
+                                    icon: const Icon(Icons.menu)),
                               Text(
                                 AppLocalizations.of(context)!.settings,
                                 style: Theme.of(context).textTheme.headline5,
@@ -119,18 +120,18 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           ),
                           // Configuration tile
                           upperBarWidget(configurations, general, context,
-                              configurationBox),
+                              configurationBox, showSidebar),
                           if (showRenameField!)
                             Row(
                               children: [
-                                Text(AppLocalizations.of(context)!.rename +
-                                    ": "),
-                                Container(
+                                Text(
+                                    "${AppLocalizations.of(context)!.rename}: "),
+                                SizedBox(
                                   width: 280,
                                   child: TextField(
-                                    controller: _renameController,
+                                    controller: renameController,
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                                      border: const OutlineInputBorder(),
                                       hintText: AppLocalizations.of(context)!
                                           .renameTextField,
                                     ),
@@ -139,11 +140,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                                 TextButton.icon(
                                   onPressed: () {
                                     ConfigurationController.updateName(
-                                        selectedConfig!,
-                                        _renameController.text);
+                                        selectedConfig!, renameController.text);
                                     showRenameField = false;
                                   },
-                                  icon: Icon(Icons.save),
+                                  icon: const Icon(Icons.save),
                                   label:
                                       Text(AppLocalizations.of(context)!.save),
                                 ),
@@ -155,13 +155,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12.0),
                             child: Text(
-                                AppLocalizations.of(context)!.lastModified +
-                                    " " +
-                                    selectedConfig!.editDate.toString()),
+                                "${AppLocalizations.of(context)!.lastModified} ${selectedConfig!.editDate}"),
                           ),
                           generalSettingsWidget(context, general),
                           ElevatedButton.icon(
-                            icon: Icon(Icons.restore),
+                            icon: const Icon(Icons.restore),
                             onPressed: () {
                               setState(() {
                                 resetToDefaults(configurationBox, generalBox);
@@ -198,7 +196,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         ),
         Card(
           elevation: 5,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -216,10 +214,14 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     items: AppLocalizations.supportedLocales
                         .map<DropdownMenuItem<Locale>>((Locale option) {
                       String languageOption = "English";
-                      if (option.languageCode == "en")
+                      if (option.languageCode == "en") {
                         languageOption = "English";
-                      if (option.languageCode == "ar")
+                      }
+                      if (option.languageCode == "ar") {
                         languageOption = "العربية";
+                      } else {
+                        languageOption = option.languageCode;
+                      }
                       return DropdownMenuItem<Locale>(
                         value: option,
                         child: Text(languageOption),
@@ -261,16 +263,15 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
         ),
         Card(
           elevation: 5,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 SwitchListTile(
-                    title: Text(AppLocalizations.of(context)!.hashingAlgorithm +
-                        " " +
-                        hashingAlgo),
+                    title: Text(
+                        "${AppLocalizations.of(context)!.hashingAlgorithm} $hashingAlgo"),
                     subtitle: Text(AppLocalizations.of(context)!
                         .hashingAlgorithmDescription),
                     value: selectedConfig!.hashingAlgorithm,
@@ -280,11 +281,10 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             selectedConfig!, value);
                       });
                     }),
-                Divider(),
+                const Divider(),
                 SwitchListTile(
-                    title: Text(AppLocalizations.of(context)!.hashingFunction +
-                        " " +
-                        hashingFn),
+                    title: Text(
+                        "${AppLocalizations.of(context)!.hashingFunction} $hashingFn"),
                     subtitle: Text(AppLocalizations.of(context)!
                         .hashingFunctionDescription),
                     value: selectedConfig!.hashingFunction,
@@ -294,7 +294,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             selectedConfig!, value);
                       });
                     }),
-                Divider(),
+                const Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
@@ -308,7 +308,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                           children: [
                             if (selectedConfig!.pwLength > 8)
                               IconButton(
-                                icon: Icon(Icons.remove),
+                                icon: const Icon(Icons.remove),
                                 onPressed: () => setState(() {
                                   ConfigurationController.updatePWLength(
                                       selectedConfig!,
@@ -318,7 +318,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             Text(selectedConfig!.pwLength.toString()),
                             if (selectedConfig!.pwLength < 24)
                               IconButton(
-                                icon: Icon(Icons.add),
+                                icon: const Icon(Icons.add),
                                 onPressed: () => setState(() {
                                   ConfigurationController.updatePWLength(
                                       selectedConfig!,
@@ -329,9 +329,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                         ),
                       ]),
                 ),
-                Divider(),
+                const Divider(),
                 CheckboxListTile(
                   title: Text(AppLocalizations.of(context)!.validatePassword),
+                  subtitle: Text(
+                      AppLocalizations.of(context)!.validatePasswordSubtitle),
                   value: selectedConfig!.validateInputpw,
                   onChanged: (value) {
                     log(value.toString());
@@ -343,6 +345,8 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                 ),
                 CheckboxListTile(
                   title: Text(AppLocalizations.of(context)!.stripSubdomain),
+                  subtitle: Text(
+                      AppLocalizations.of(context)!.stripSubdomainSubtitle),
                   value: selectedConfig!.stripSubDomain,
                   onChanged: (value) {
                     log(value.toString());
@@ -360,8 +364,12 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
     );
   }
 
-  Row upperBarWidget(List<Configuration> configurations, General general,
-      BuildContext context, Box<Configuration> configurationBox) {
+  Row upperBarWidget(
+      List<Configuration> configurations,
+      General general,
+      BuildContext context,
+      Box<Configuration> configurationBox,
+      bool largeSize) {
     return Row(
       children: [
         DropdownButton<Configuration>(
@@ -387,39 +395,69 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               showRenameField = !showRenameField!;
             });
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           label: Text(AppLocalizations.of(context)!.rename),
         ),
-        TextButton.icon(
-          onPressed: () {
-            setState(() {
-              Configuration newConfig = Configuration();
-              newConfig.name =
-                  "Configuration " + configurations.length.toString();
-              ConfigurationController.addConfiguration(
-                  newConfig, configurationBox);
-              GeneralController.updateSelectedConfiguration(
-                  general, newConfig!.key);
-            });
-          },
-          icon: Icon(Icons.add),
-          label: Text(AppLocalizations.of(context)!.newConfig),
-        ),
-        TextButton.icon(
-          onPressed: () {
-            if (configurations.length > 1) {
-              ConfigurationController.deleteConfiguration(selectedConfig!);
-              configurations.remove(selectedConfig);
-              GeneralController.updateSelectedConfiguration(
-                  general, configurations[0].key);
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(AppLocalizations.of(context)!.deleteError)));
-            }
-          },
-          icon: Icon(Icons.remove),
-          label: Text(AppLocalizations.of(context)!.delete),
-        ),
+        largeSize
+            ? TextButton.icon(
+                onPressed: () {
+                  setState(() {
+                    Configuration newConfig = Configuration();
+                    newConfig.name = "Configuration ${configurations.length}";
+                    ConfigurationController.addConfiguration(
+                        newConfig, configurationBox);
+                    GeneralController.updateSelectedConfiguration(
+                        general, newConfig.key);
+                  });
+                },
+                icon: const Icon(Icons.add),
+                label: Text(AppLocalizations.of(context)!.newConfig),
+              )
+            : IconButton(
+                onPressed: () {
+                  setState(() {
+                    Configuration newConfig = Configuration();
+                    newConfig.name = "Configuration ${configurations.length}";
+                    ConfigurationController.addConfiguration(
+                        newConfig, configurationBox);
+                    GeneralController.updateSelectedConfiguration(
+                        general, newConfig.key);
+                  });
+                },
+                icon: const Icon(Icons.add)),
+        largeSize
+            ? TextButton.icon(
+                onPressed: () {
+                  if (configurations.length > 1) {
+                    ConfigurationController.deleteConfiguration(
+                        selectedConfig!);
+                    configurations.remove(selectedConfig);
+                    GeneralController.updateSelectedConfiguration(
+                        general, configurations[0].key);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.deleteError)));
+                  }
+                },
+                icon: const Icon(Icons.remove),
+                label: Text(AppLocalizations.of(context)!.delete),
+              )
+            : IconButton(
+                onPressed: () {
+                  if (configurations.length > 1) {
+                    ConfigurationController.deleteConfiguration(
+                        selectedConfig!);
+                    configurations.remove(selectedConfig);
+                    GeneralController.updateSelectedConfiguration(
+                        general, configurations[0].key);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.deleteError)));
+                  }
+                },
+                icon: const Icon(Icons.delete)),
       ],
     );
   }

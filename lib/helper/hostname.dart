@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import 'ccTLD.dart';
+import 'cc_tld.dart';
 
 String returnHostname(String hostname) {
   List<String> urlSplit = hostname.split('.');

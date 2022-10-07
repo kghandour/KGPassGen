@@ -43,6 +43,7 @@ dependencies:
   hive_flutter: ^1.1.0
   intl: ^0.17.0
   url_launcher: ^6.1.5
+  crypto: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,23 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: "^0.10.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/AppIcon.png"
+  web:
+    generate: true
+    image_path: "assets/AppIcon.png"
+  macos:
+    generate: true
+    image_path: "assets/AppIcon.png"
+  windows:
+    generate: true
+    image_path: "assets/AppIcon.png"
+  linux:
+    generate: true  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

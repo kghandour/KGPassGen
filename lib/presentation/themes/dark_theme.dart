@@ -7,20 +7,18 @@ class DarkTheme {
       primarySwatch: Colors.red,
       primaryColor: Colors.red,
       toggleableActiveColor: Colors.red,
-      textTheme: TextTheme(
-        bodyText2: TextStyle(fontSize: 16),
-      ),
-      buttonTheme: ButtonThemeData(
+      iconTheme: const IconThemeData(color: Colors.red),
+      buttonTheme: const ButtonThemeData(
         padding: EdgeInsets.all(16),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          textStyle: new TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       checkboxTheme:

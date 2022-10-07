@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:hive/hive.dart';
 import 'package:kg_passgen/controller/configuration_controller.dart';
 import 'package:kg_passgen/controller/general_controller.dart';
@@ -13,14 +11,14 @@ List initializeGeneralConfig(Box configurationBox, Box generalBox) {
 
   Configuration config;
   General general;
-  if (generalOptions.length == 0) {
+  if (generalOptions.isEmpty) {
     general = General();
     GeneralController.addGeneral(general, generalBox);
   } else {
     general = generalOptions.first;
   }
 
-  if (configurations.length == 0) {
+  if (configurations.isEmpty) {
     config = Configuration();
     config.name = "Default: KGPG";
     ConfigurationController.addConfiguration(config, configurationBox);
@@ -31,8 +29,9 @@ List initializeGeneralConfig(Box configurationBox, Box generalBox) {
     ConfigurationController.addConfiguration(sgpConfig, configurationBox);
   } else {
     config = configurations[0];
-    if (general.setConfiguration != null && general.setConfiguration != 0)
+    if (general.setConfiguration != 0) {
       config = configurationBox.get(general.setConfiguration);
+    }
   }
 
   return [configurations, generalOptions, config, general];

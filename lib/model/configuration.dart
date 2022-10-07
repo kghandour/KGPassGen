@@ -23,8 +23,8 @@ class Configuration extends HiveObject {
   late int pwLength = 15;
 
   @HiveField(6)
-  late bool validateInputpw = true;
+  late bool validateInputpw = false;
 
   @HiveField(7)
-  late bool stripSubDomain = false;
+  late bool stripSubDomain = true;
 }

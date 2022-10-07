@@ -15,6 +15,8 @@
     "generatedPWLength": "طول كلمة المرور التي تم إنشاؤها",
     "validatePassword": "تحقق من صحة إدخال كلمة المرور",
     "stripSubdomain": "تجريد العنوان الفرعي و المخرج",
+    "validatePasswordSubtitle":"تأكد من أن كلمة مرورك الرئيسية تتبع متطلبات قوية. الأحرف الكبيرة والصغيرة والأرقام.",
+    "stripSubdomainSubtitle":"يولد نفس كلمة المرور على سبيل المثال: www.google.com و google.com",
     "backToHome":"العودة الي الصفحة الرئيسية",
     "generalSettings": "الاعدادات العامة",
     "appLanguage": "لغة البرنامج",

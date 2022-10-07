@@ -21,18 +21,18 @@ class Hashing {
   static String convertBytesToStringSGP(List<int> bytes) {
     String string = base64Encode(bytes);
     string = string
-        .replaceAll(new RegExp(r'\+'), '9')
-        .replaceAll(new RegExp(r'\/'), '8')
-        .replaceAll(new RegExp(r'='), 'A');
+        .replaceAll(RegExp(r'\+'), '9')
+        .replaceAll(RegExp(r'\/'), '8')
+        .replaceAll(RegExp(r'='), 'A');
     return string;
   }
 
   static String convertBytesToStringKG(List<int> bytes) {
     String string = base64Encode(bytes);
     string = string
-        .replaceAll(new RegExp(r'\+'), '!')
-        .replaceAll(new RegExp(r'\/'), '#')
-        .replaceAll(new RegExp(r'='), '%')
+        .replaceAll(RegExp(r'\+'), '!')
+        .replaceAll(RegExp(r'\/'), '#')
+        .replaceAll(RegExp(r'='), '%')
         .replaceAll('0', '@')
         .replaceAll('8', '\$')
         .replaceAll('9', '&');
@@ -45,18 +45,18 @@ class Hashing {
     website = website.replaceAll("http://", '');
     final uri =
         configuration.stripSubDomain ? returnHostname(website) : website;
-    String output = master + ":" + uri;
+    String output = "$master:$uri";
     List<int> bytes;
-    int _loops = 15;
-    if (configuration.hashingAlgorithm) _loops = 10;
-    for (var i = 0; i < _loops; i++) {
+    int loops = 15;
+    if (configuration.hashingAlgorithm) loops = 10;
+    for (var i = 0; i < loops; i++) {
       bytes = (configuration.hashingFunction)
           ? generateMD5(output)
           : generateSHA512(output);
       output = (configuration.hashingAlgorithm)
           ? convertBytesToStringSGP(bytes)
           : convertBytesToStringKG(bytes);
-      if (i == _loops - 1 &&
+      if (i == loops - 1 &&
           !Validation.outputPasswordValidation(
               output, configuration.pwLength, configuration.hashingAlgorithm)) {
         i -= 1;

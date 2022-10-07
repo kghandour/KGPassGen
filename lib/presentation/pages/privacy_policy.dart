@@ -10,17 +10,17 @@ class PrivacyPolicy extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    bool _showSidebar =
+    bool showSidebar =
         (screenSize.width >= 800 && orientation == Orientation.landscape)
             ? true
             : false;
 
     return Scaffold(
-        drawer: NavigationDrawer(),
+        drawer: const NavigationDrawer(),
         body: Builder(builder: (scaffoldContext) {
           return SafeArea(
               child: Row(children: [
-            if (_showSidebar) NavigationSidebar(),
+            if (showSidebar) const NavigationSidebar(),
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -28,12 +28,12 @@ class PrivacyPolicy extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      if (!_showSidebar)
+                      if (!showSidebar)
                         IconButton(
                             onPressed: () {
                               Scaffold.of(scaffoldContext).openDrawer();
                             },
-                            icon: Icon(Icons.menu)),
+                            icon: const Icon(Icons.menu)),
                       Text(
                         AppLocalizations.of(context)!.privacyPolicy,
                         style: Theme.of(context).textTheme.headline5,

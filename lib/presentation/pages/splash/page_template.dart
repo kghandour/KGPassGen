@@ -7,7 +7,6 @@ Widget splashTemplate({
   required BuildContext context,
   required String urlImage,
 }) {
-  final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
 
   return Padding(
@@ -43,7 +42,6 @@ Widget singleSplashTemplate({
   required BuildContext context,
   required String urlImage,
 }) {
-  final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
 
   return Padding(
@@ -61,6 +59,7 @@ Widget singleSplashTemplate({
             Text(
               title,
               style: Theme.of(context).textTheme.headline5,
+              textAlign: TextAlign.center,
             ),
             Text(
               subtitle,

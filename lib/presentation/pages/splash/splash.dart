@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kg_passgen/controller/boxes.dart';
 import 'package:kg_passgen/controller/general_controller.dart';
-import 'package:kg_passgen/helper/initValues.dart';
-import 'package:kg_passgen/model/configuration.dart';
+import 'package:kg_passgen/helper/init_values.dart';
 import 'package:kg_passgen/model/general.dart';
-import 'package:kg_passgen/presentation/widgets/MultiValueListenableBuilder.dart';
+import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:kg_passgen/presentation/pages/splash/page_template.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _OnboardingPageState();
@@ -34,18 +35,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         second: Boxes.getConfigurations().listenable(),
         builder: (context, generalBox, configurationBox, _) {
           List inits = initializeGeneralConfig(configurationBox, generalBox);
-          final configurations = inits[0] as List<Configuration>;
-          final generalSettings = inits[1];
-          final config = inits[2] as Configuration;
           final general = inits[3] as General;
-
-          Size screenSize = MediaQuery.of(context).size;
-          Orientation orientation = MediaQuery.of(context).orientation;
-
-          bool _wideScreen =
-              (screenSize.width >= 800 && orientation == Orientation.landscape)
-                  ? true
-                  : false;
 
           return Scaffold(
             body: Container(

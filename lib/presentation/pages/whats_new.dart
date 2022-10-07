@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kg_passgen/controller/whatsNew_controller.dart';
+import 'package:kg_passgen/controller/whats_new_controller.dart';
 import 'package:kg_passgen/presentation/widgets/drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -15,28 +15,28 @@ class _WhatsNewPageState extends State<WhatsNewPage> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     Orientation orientation = MediaQuery.of(context).orientation;
-    bool _showSidebar =
+    bool showSidebar =
         (screenSize.width >= 800 && orientation == Orientation.landscape)
             ? true
             : false;
-    int _easterEggHits = 0;
+    int easterEggHits = 0;
 
     return Scaffold(
-      drawer: !_showSidebar ? NavigationDrawer() : null,
+      drawer: !showSidebar ? const NavigationDrawer() : null,
       body: Builder(
         builder: (scaffoldContext) {
           return SafeArea(
             child: Row(
               children: [
-                if (_showSidebar) NavigationSidebar(),
+                if (showSidebar) const NavigationSidebar(),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListView(
                       children: [
-                        whatsNewWidget(_showSidebar, scaffoldContext, context),
+                        whatsNewWidget(showSidebar, scaffoldContext, context),
                         otherDevicesWidget(context),
-                        aboutKGWidget(context, _easterEggHits),
+                        aboutKGWidget(context, easterEggHits),
                       ],
                     ),
                   ),
@@ -49,7 +49,7 @@ class _WhatsNewPageState extends State<WhatsNewPage> {
     );
   }
 
-  Column aboutKGWidget(BuildContext context, int _easterEggHits) {
+  Column aboutKGWidget(BuildContext context, int easterEggHits) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,13 +62,14 @@ class _WhatsNewPageState extends State<WhatsNewPage> {
         ),
         GestureDetector(
           onTap: () {
-            _easterEggHits += 1;
-            if (_easterEggHits < 2)
+            easterEggHits += 1;
+            if (easterEggHits < 2) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                     AppLocalizations.of(context)!.whatsNewEasterEggSnackBar),
               ));
-            if (_easterEggHits >= 2) {
+            }
+            if (easterEggHits >= 2) {
               setState(() {
                 showDialog(
                     context: context, builder: (context) => easterEgg(context));
@@ -150,17 +151,17 @@ class _WhatsNewPageState extends State<WhatsNewPage> {
   }
 
   Column whatsNewWidget(
-      bool _showSidebar, BuildContext scaffoldContext, BuildContext context) {
+      bool showSidebar, BuildContext scaffoldContext, BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            if (!_showSidebar)
+            if (!showSidebar)
               IconButton(
                   onPressed: () {
                     Scaffold.of(scaffoldContext).openDrawer();
                   },
-                  icon: Icon(Icons.menu)),
+                  icon: const Icon(Icons.menu)),
             Text(
               AppLocalizations.of(context)!.whatsNew,
               style: Theme.of(context).textTheme.headline5,

@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:kg_passgen/presentation/pages/configuration_page.dart';
 
 class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(child: DrawerList());
+    return const Drawer(child: DrawerList());
   }
 }
 
 class NavigationSidebar extends StatelessWidget {
+  const NavigationSidebar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black12,
-      child: DrawerList(),
       width: 285,
+      child: const DrawerList(),
     );
   }
 }
 
 class DrawerList extends StatelessWidget {
+  const DrawerList({super.key});
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
@@ -31,14 +37,14 @@ class DrawerList extends StatelessWidget {
             Column(
               children: [
                 ListTile(
-                  leading: Icon(Icons.home),
+                  leading: const Icon(Icons.home),
                   title: Text(AppLocalizations.of(context)!.homePage),
                   onTap: () {
                     Navigator.of(context).pushReplacementNamed('/home');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.settings),
+                  leading: const Icon(Icons.settings),
                   title: Text(AppLocalizations.of(context)!.settings),
                   onTap: () {
                     Navigator.of(context)
@@ -46,14 +52,14 @@ class DrawerList extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.bookmark),
+                  leading: const Icon(Icons.bookmark),
                   title: Text(AppLocalizations.of(context)!.whatsNew),
                   onTap: () {
                     Navigator.of(context).pushReplacementNamed('/whatsnew');
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.privacy_tip),
+                  leading: const Icon(Icons.privacy_tip),
                   title: Text(AppLocalizations.of(context)!.privacyPolicy),
                   onTap: () {
                     Navigator.of(context).pushReplacementNamed('/privacy');
@@ -62,7 +68,7 @@ class DrawerList extends StatelessWidget {
               ],
             ),
             ListTile(
-              leading: Icon(Icons.help),
+              leading: const Icon(Icons.help),
               title: Text(AppLocalizations.of(context)!.splashTitle),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed('/splash');
