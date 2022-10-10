@@ -1,0 +1,97 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/README.md'
+    tags:
+      - '*' 
+  pull_request:
+    branches: [main]
+    tags:
+      - '*' 
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  releases:
+    name: release
+    - name: release-apk
+      steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # or: 'beta', 'dev' or 'master'
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build apk --release
+      - run: flutter build appbundle
+    - name: release-web
+      steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build web --release
+    - name: release-ios
+      runs-on: macos-latest
+      steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build ios --release --no-codesign
+    - name: release-windows
+      runs-on: windows-latest
+      steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'beta'
+      - run: flutter build windows --release
+    - name: release-linux
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v3
+     - uses: subosito/flutter-action@v2
+       with:
+         channel: 'stable'
+     - run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ninja-build libgtk-3-dev
+     - run: flutter config --enable-linux-desktop
+     - run: flutter build linux --release
+    runs-on: macos-latest
+    steps:
+     - uses: actions/checkout@v3
+     - uses: subosito/flutter-action@v2
+       with:
+         channel: 'stable'
+         architecture: x64
+     - run: flutter config --enable-macos-desktop
+     - run: flutter build macos --release
+    - name: Zip Web
+      runs-on: ubuntu-latest
+      run: zip -r web.zip build/web
+    - name: Create a Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "build/app/outputs/apk/debug/*.apk"
+        artifacts: "build/ios/iphoneos/*.app"
+        artifacts: "build/macos/Build/Products/Release/*.app"
+        artifacts: "web.zip"
+        token: ${{ secrets.TOKEN }}
