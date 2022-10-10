@@ -1,235 +1,142 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:kg_passgen/Screens/Home/home_screen.dart';
-import 'package:kg_passgen/Screens/Settings/settings_screen.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:kg_passgen/Screens/Tips/tips_screen.dart';
-import 'package:kg_passgen/CustomTheme.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:kg_passgen/controller/boxes.dart';
+import 'package:kg_passgen/helper/init_values.dart';
+import 'package:kg_passgen/model/configuration.dart';
+import 'package:kg_passgen/model/general.dart';
+import 'package:kg_passgen/presentation/pages/configuration_page.dart';
+import 'package:kg_passgen/presentation/pages/home_page.dart';
+import 'package:kg_passgen/presentation/pages/privacy_policy.dart';
+import 'package:kg_passgen/presentation/pages/splash/splash.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:kg_passgen/presentation/pages/whats_new.dart';
+import 'package:kg_passgen/presentation/themes/dark_theme.dart';
+import 'package:kg_passgen/presentation/themes/light_theme.dart';
+import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
+import 'package:window_manager/window_manager.dart';
 
-var settingsBox;
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized;
 
-void main() async {
   await Hive.initFlutter();
-  settingsBox = await Hive.openBox('settings');
-  runApp(MyApp());
-}
+  Hive.registerAdapter(ConfigurationAdapter());
+  Hive.registerAdapter(GeneralAdapter());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'KG Password Generator',
-      theme: CustomTheme.darkTheme,
-      home: AppManager(title: 'KG Password Generator'),
+  await Hive.openBox<Configuration>('configurations');
+
+  await Hive.openBox<General>('general');
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      minimumSize: Size(600, 500),
     );
-  }
-}
-
-class AppManager extends StatefulWidget {
-  AppManager({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  AppManagerState createState() => AppManagerState();
-}
-
-class AppManagerState extends State<AppManager> {
-  int _selectedIndex = 0;
-  GlobalKey<HomePageState> _myKey = GlobalKey();
-  GlobalKey<SettingsPageState> _settingsKey = GlobalKey();
-
-  Future<void> _showAboutDialog() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('About this application'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                    'KG Password Generator provides a method of generating secure passwords that matches today\'s standards of security. Users can choose between two modes, SGP (SupergenPass - an older version) and KGPassGen (improved version of the SGP algorithm)'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Text("v" + packageInfo.version + "+" + packageInfo.buildNumber),
-            // TextButton(
-            //   child: Text('Approve'),
-            //   onPressed: () {
-            //     Navigator.of(context).pop();
-            //   },
-            // ),
-          ],
-        );
-      },
-    );
-  }
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      _settingsKey.currentState?.kgLenFocus?.unfocus();
-      _settingsKey.currentState?.sgpLenFocus?.unfocus();
-      if (index == 0) {
-        _myKey.currentState?.forceShowButton();
-      }
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
     });
   }
 
-  bool _isTooShort = false;
-  bool _isTooWide = false;
+  runApp(const MyApp());
+}
 
-  Widget appContent() {
-    return Container(
-      child: Center(
-        child: IndexedStack(
-          children: <Widget>[
-            HomePage(
-              key: _myKey,
-            ),
-            SettingsPage(
-              key: _settingsKey,
-            ),
-            TipsPage()
-          ],
-          index: _selectedIndex,
-        ),
-      ),
-    );
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    if (height <= 380)
-      setState(() => _isTooShort = true);
-    else
-      setState(() => _isTooShort = false);
+    return MultiValueListenableBuilder(
+      first: Boxes.getGeneral().listenable(),
+      second: Boxes.getConfigurations().listenable(),
+      builder: (context, generalBox, configurationBox, _) {
+        List inits = initializeGeneralConfig(configurationBox, generalBox);
+        final general = inits[3] as General;
 
-    if (width >= 800)
-      setState(() {
-        _isTooWide = true;
-      });
-    else
-      setState(() {
-        _isTooWide = false;
-      });
+        var localeSet = Locale(general.locale);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          PopupMenuButton(
-              itemBuilder: (_) => <PopupMenuItem<String>>[
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(0),
-                        icon: const Icon(Icons.home),
-                        label: Text(
-                          "Home",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(1),
-                        icon: Icon(Icons.settings),
-                        label: Text(
-                          "Settings",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    if (_isTooShort)
-                      new PopupMenuItem<String>(
-                          child: TextButton.icon(
-                        onPressed: () => _onItemTapped(2),
-                        icon: Icon(Icons.help),
-                        label: Text(
-                          "Tips",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('mailto:feedback@kghandour.com'),
-                      icon: Icon(Icons.mail),
-                      label: Text(
-                        "Send Feedback",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('https://kghandour.com'),
-                      icon: Icon(Icons.link),
-                      label: Text(
-                        "Visit KGhandour Website",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => launch('https://supergenpass.com'),
-                      icon: Icon(Icons.link),
-                      label: Text(
-                        "Visit SGP Website",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                    new PopupMenuItem<String>(
-                        child: TextButton.icon(
-                      onPressed: () => _showAboutDialog(),
-                      icon: Icon(Icons.info),
-                      label: Text(
-                        "About",
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    )),
-                  ])
-        ],
-      ),
-      body: _isTooWide
-          ? Center(
-              child: SizedBox(
-                width: 800,
-                child: appContent(),
-              ),
-            )
-          : appContent(),
-      bottomNavigationBar: _isTooShort
-          ? null
-          : BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.help),
-                  label: 'Tips',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.red,
-              onTap: _onItemTapped,
-            ),
+        var darkMode = general.darkMode;
+
+        var showSplash = general.showGuide;
+
+        return MaterialApp(
+          title: 'KG Password Generator',
+          localizationsDelegates: const [
+            AppLocalizations.delegate, // Add this line
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: localeSet,
+          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          darkTheme: DarkTheme.darkTheme,
+          theme: LightTheme.lightTheme,
+          initialRoute: '/',
+          onGenerateRoute: (settings) {
+            if (settings.name == "/home") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => const HomePage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/splash") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => const OnboardingPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/privacy") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => const PrivacyPolicy(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/configurations") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => const ConfigurationPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            if (settings.name == "/whatsnew") {
+              return PageRouteBuilder(
+                settings:
+                    settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                pageBuilder: (_, __, ___) => const WhatsNewPage(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero,
+              );
+            }
+            // Unknown route
+            return MaterialPageRoute(
+                builder: (_) =>
+                    showSplash ? const OnboardingPage() : const HomePage());
+          },
+          // routes: {
+          //   '/': (context) => showSplash ? OnboardingPage() : HomePage(),
+          //   '/home': (context) => HomePage(),
+          //   '/splash': (context) => OnboardingPage(),
+          //   '/configurations': (context) => ConfigurationPage(),
+          //   '/privacy': (context) => PrivacyPolicy(),
+          // },
+        );
+      },
     );
   }
 }
