@@ -51,8 +51,7 @@ jobs:
       steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
-        with:
-          channel: 'beta'
+      - run: flutter clean
       - run: flutter build windows --release
   release-linux:
       runs-on: ubuntu-latest
