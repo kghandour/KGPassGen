@@ -87,10 +87,12 @@ jobs:
        - run: flutter build macos --release
   zip-web:
       runs-on: ubuntu-latest
+      needs: [release-web]
       steps:
         - run: zip -r web.zip . -i build/web
   create-release:
       runs-on: ubuntu-latest
+      needs: [release-apk, release-web, release-ios,release-linux, release-macos, zip-web]
       steps:
         - uses: ncipollo/release-action@v1
           with:
