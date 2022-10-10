@@ -82,7 +82,7 @@ jobs:
         - run: zip -r web.zip . -i build/web
   create-release:
       runs-on: ubuntu-latest
-      needs: [release-apk, release-web, release-ios,release-linux, release-macos, release-windows, zip-web]
+      needs: [release-apk, release-web, release-ios,release-linux, release-macos, zip-web]
       steps:
         - uses: ncipollo/release-action@v1
           with:
