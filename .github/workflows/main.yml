@@ -90,7 +90,9 @@ jobs:
       steps:
         - run: zip -r web.zip build/web
   create-release:
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "build/app/outputs/apk/debug/*.apk, build/ios/iphoneos/*.app, build/macos/Build/Products/Release/*.app, web.zip"
-        token: ${{ secrets.TOKEN }}
+      runs-on: ubuntu-latest
+      steps:
+        - uses: ncipollo/release-action@v1
+          with:
+            artifacts: "build/app/outputs/apk/debug/*.apk, build/ios/iphoneos/*.app, build/macos/Build/Products/Release/*.app, web.zip"
+            token: ${{ secrets.TOKEN }}
