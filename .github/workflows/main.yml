@@ -96,3 +96,4 @@ jobs:
           with:
             artifacts: "build/app/outputs/apk/debug/*.apk, build/ios/iphoneos/*.app, build/macos/Build/Products/Release/*.app, web.zip"
             token: ${{ secrets.TOKEN }}
+            allowUpdates: true
