@@ -18,7 +18,8 @@ String returnHostname(String hostname) {
   if (urlSplit.length <= 2) {
     return urlSplit.join('.');
   }
-  var matchedTld = ccTldList.firstWhere((element) => hostname.endsWith(element),
+  var matchedTld = ccTldList.firstWhere(
+      (element) => urlSplit.join('.').endsWith(element),
       orElse: () => '');
   if (matchedTld.isNotEmpty) {
     int matchedLength = matchedTld.split('.').length + 1;

@@ -24,9 +24,9 @@ class Validation {
 
   static bool outputPasswordValidation(String v, int length, bool algo) {
     String value = v.substring(0, length);
-    var urlPattern =
+    var passwordPattern =
         r"(?=.*^[a-z])(?=.*[A-Z])(?=.*[0-9])([a-zA-Z0-9#?!@$%^&*]){8,}$";
-    var match = RegExp(urlPattern, caseSensitive: true).firstMatch(value);
+    var match = RegExp(passwordPattern, caseSensitive: true).firstMatch(value);
     if (match == null) return false;
     if (algo == false) {
       if (!value.contains("!") &&
