@@ -219,8 +219,6 @@ class ConfigurationPageState extends State<ConfigurationPage> {
                       }
                       if (option.languageCode == "ar") {
                         languageOption = "العربية";
-                      } else {
-                        languageOption = option.languageCode;
                       }
                       return DropdownMenuItem<Locale>(
                         value: option,

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,6 +16,7 @@ import 'package:kg_passgen/presentation/pages/whats_new.dart';
 import 'package:kg_passgen/presentation/themes/dark_theme.dart';
 import 'package:kg_passgen/presentation/themes/light_theme.dart';
 import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
+import 'package:window_manager/window_manager.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized;
@@ -25,6 +28,18 @@ Future main() async {
   await Hive.openBox<Configuration>('configurations');
 
   await Hive.openBox<General>('general');
+
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      minimumSize: Size(600, 500),
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(const MyApp());
 }
