@@ -12,7 +12,7 @@
     "hashingAlgorithmDescription": "Options:\nKGPG generates a higher complexity passwords that must contain Uppercase, lowercase, symbols and numbers.\nSGP generates a password that contains Uppercase, lowercase and numbers.",
     "hashingFunction": "Hashing Function",
     "hashingFunctionDescription": "Options:\nMD5 or SHA512.",
-    "generatedPWLength": "Generated Password Length",
+    "generatedPWLength": "Generated Pass Length",
     "validatePassword": "Validate Input Password",
     "validatePasswordSubtitle":"Makes sure that your master password follows strong requirements. Uppercase, lowercase and numbers.",
     "stripSubdomain": "Strip Subdomain and Port",
