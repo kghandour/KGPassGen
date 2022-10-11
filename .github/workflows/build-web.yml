@@ -42,7 +42,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build web --release
-    - run: zip -r web.zip . -i ./build/web
+    - run: cd ./build; zip -r ../web.zip ./web/
     - uses: actions/upload-artifact@v2
       with:
         name: built-web
