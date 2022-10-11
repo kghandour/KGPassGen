@@ -23,10 +23,11 @@ jobs:
      - run: flutter config --enable-macos-desktop
      - run: flutter build macos --release
      - run: mv ./build/macos/Build/Products/Release/*.app ./KGPassGen-macOS.app
+     - run: zip -r macos.zip ./KGPassGen-macOS.app
      - uses: actions/upload-artifact@v2
        with:
         name: built-macos
-        path: ./KGPassGen-macOS.app
+        path: ./macos.zip
   upload-artifacts:
     runs-on: ubuntu-latest
     needs: [release-macos]
@@ -36,6 +37,6 @@ jobs:
           name: built-macos
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "KGPassGen-macOS.app"
+          artifacts: "macos.zip"
           token: ${{ secrets.TOKEN }}
           allowUpdates: true
