@@ -4,6 +4,9 @@ name: Build Web
 
 # Controls when the workflow will run
 on:
+  create:
+    tags:
+      - v*
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
