@@ -27,8 +27,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build apk --release
-    - run: flutter build appbundle
-    - run: mv build/app/outputs/flutter-apk/*.apk KGPassGen-android.apk
+    - run: mv build/app/outputs/flutter-apk/app-release.apk ./KGPassGen-android.apk
     - uses: actions/upload-artifact@v2
       with:
         name: built-android
