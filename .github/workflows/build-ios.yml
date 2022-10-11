@@ -23,7 +23,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test
     - run: flutter build ios --release --no-codesign
-    - run: mv ./build/ios/iphoneos/Runner.app ./KGPassGen-ios.app
+    - run: mv ./build/ios/iphoneos/*.app ./KGPassGen-ios.app
     - uses: actions/upload-artifact@v2
       with:
         name: built-ios
