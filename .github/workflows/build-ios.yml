@@ -24,10 +24,11 @@ jobs:
     - run: flutter test
     - run: flutter build ios --release --no-codesign
     - run: mv ./build/ios/iphoneos/*.app ./KGPassGen-ios.app
+    - run: zip -r ios.zip ./KGPassGen-ios.app
     - uses: actions/upload-artifact@v2
       with:
         name: built-ios
-        path: ./KGPassGen-ios.app
+        path: ./ios.zip
   upload-artifacts:
     runs-on: ubuntu-latest
     needs: [release-ios]
@@ -37,6 +38,6 @@ jobs:
           name: built-ios
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "KGPassGen-ios.app"
+          artifacts: "ios.zip"
           token: ${{ secrets.TOKEN }}
           allowUpdates: true
