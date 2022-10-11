@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kg_passgen">
+    package="com.kghandour.kg_password_generator">
    <application
-        android:label="kg_passgen"
+        android:label="KG Pass Gen"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
