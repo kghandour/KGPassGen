@@ -1,8 +1,7 @@
 {
   "name": "KGPassGen",
   "short_name": "KGP",
-  "start_url": "/KGPassGen/",
-  "scope": ".",
+  "start_url": "https://kghandour.github.io/KGPassGen/",
   "display": "standalone",
   "background_color": "#0175C2",
   "theme_color": "#0175C2",
