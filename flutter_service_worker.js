@@ -8,7 +8,7 @@ const RESOURCES = {
 "canvaskit/profiling/canvaskit.wasm": "95a45378b69e77af5ed2bc72b2209b94",
 "canvaskit/profiling/canvaskit.js": "38164e5a72bdad0faa4ce740c9b8e564",
 "canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
-"manifest.json": "d70b8aa2075838faf39078f77752303e",
+"manifest.json": "faee9b873c58e24e050d5d467c8ae572",
 "icons/Icon-maskable-512.png": "b0b369d94fcc649009eead5168409c96",
 "icons/Icon-maskable-192.png": "a3c257cf8fe8efdc564622c6136a0c42",
 "icons/Icon-512.png": "b0b369d94fcc649009eead5168409c96",
@@ -30,8 +30,8 @@ const RESOURCES = {
 "assets/assets/AppIcon.png": "458c9e528832a0e91fa054d7f375c88f",
 "assets/assets/splash-2.png": "0d031255f51aba70118b7d7019c0cb17",
 "assets/NOTICES": "b46e05ec80d1a203046d5d64fff4ec78",
-"index.html": "9606618f47b44c28265d8dbbfd244976",
-"/": "9606618f47b44c28265d8dbbfd244976",
+"index.html": "8944c3513c489b562ecfed953f00de0d",
+"/": "8944c3513c489b562ecfed953f00de0d",
 "favicon.png": "b754c601002a88b70f26eff91e5a14b9",
 "version.json": "13fc0eb09b8fa97b14e40681bde1d8b7"
 };
