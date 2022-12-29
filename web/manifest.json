@@ -1,11 +1,11 @@
 {
-  "name": "kg_passgen",
-  "short_name": "kg_passgen",
-  "start_url": ".",
+  "name": "KGPassGen",
+  "short_name": "KGP",
+  "start_url": "./KGPassGen/",
   "display": "standalone",
   "background_color": "#0175C2",
   "theme_color": "#0175C2",
-  "description": "A new Flutter project.",
+  "description": "KG Pass Generator that uses hashes to generate a strong password.",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
