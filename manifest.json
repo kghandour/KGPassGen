@@ -1,7 +1,6 @@
 {
   "name": "KGPassGen",
   "short_name": "KGP",
-  "homepage": "https://kghandour.github.io/KGPassGen/",
   "start_url": "./",
   "scope":".",
   "display": "standalone",
