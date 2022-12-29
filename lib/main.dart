@@ -17,7 +17,7 @@ import 'package:kg_passgen/presentation/themes/dark_theme.dart';
 import 'package:kg_passgen/presentation/themes/light_theme.dart';
 import 'package:kg_passgen/presentation/widgets/multi_view_listenable_builder.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:io' show Platform;
 
 
 Future main() async {
@@ -31,7 +31,7 @@ Future main() async {
 
   await Hive.openBox<General>('general');
 
-  if (defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.linux || defaultTargetPlatform == TargetPlatform.macOS) {
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
