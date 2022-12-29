@@ -31,7 +31,7 @@ Future main() async {
 
   await Hive.openBox<General>('general');
 
-  if (defaultTargetPlatform == TargetPlatform.isWindows || TargetPlatform.isLinux || TargetPlatform.isMacOS) {
+  if (defaultTargetPlatform == TargetPlatform.windows || TargetPlatform.linux || TargetPlatform.macOS) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
