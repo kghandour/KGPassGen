@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.1.5
   crypto: ^3.0.2
   window_manager: ^0.2.7
+  universal_platform: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
