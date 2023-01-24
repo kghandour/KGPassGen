@@ -3,7 +3,7 @@
 Generate passwords using on different algorithms. This project is based on SuperGenPass [ https://chriszarate.github.io/supergenpass/ ]
 
 Public Release:
-[ https://kghandour.com/KGPassGen ] 
+[ https://kghandour.github.io/KGPassGen ] 
 
 ## Getting Started
 
