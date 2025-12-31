@@ -51,8 +51,8 @@ class Hashing {
     if (configuration.hashingAlgorithm) loops = 10;
     for (var i = 0; i < loops; i++) {
       bytes = (configuration.hashingFunction)
-          ? generateSHA512(output)
-          : generateMD5(output);
+          ? generateMD5(output)
+          : generateSHA512(output);
       output = (configuration.hashingAlgorithm)
           ? convertBytesToStringSGP(bytes)
           : convertBytesToStringKG(bytes);

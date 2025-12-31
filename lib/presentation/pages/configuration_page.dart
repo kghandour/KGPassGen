@@ -86,9 +86,9 @@ class ConfigurationPageState extends State<ConfigurationPage> {
           hashingAlgo = "SGP";
         }
 
-        String hashingFn = "MD5";
+        String hashingFn = "SHA512";
         if (selectedConfig!.hashingFunction) {
-          hashingFn = "SHA512";
+          hashingFn = "MD5";
         }
 
         return Scaffold(
